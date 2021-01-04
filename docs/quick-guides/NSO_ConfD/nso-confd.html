@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.12">
+<title>NSO and ConfD interaction</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<style>
+/* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
+/* Uncomment @import statement to use as custom stylesheet */
+/*@import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700";*/
+article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}
+audio,video{display:inline-block}
+audio:not([controls]){display:none;height:0}
+html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}
+a{background:none}
+a:focus{outline:thin dotted}
+a:active,a:hover{outline:0}
+h1{font-size:2em;margin:.67em 0}
+abbr[title]{border-bottom:1px dotted}
+b,strong{font-weight:bold}
+dfn{font-style:italic}
+hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0}
+mark{background:#ff0;color:#000}
+code,kbd,pre,samp{font-family:monospace;font-size:1em}
+pre{white-space:pre-wrap}
+q{quotes:"\201C" "\201D" "\2018" "\2019"}
+small{font-size:80%}
+sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
+sup{top:-.5em}
+sub{bottom:-.25em}
+img{border:0}
+svg:not(:root){overflow:hidden}
+figure{margin:0}
+fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}
+legend{border:0;padding:0}
+button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}
+button,input{line-height:normal}
+button,select{text-transform:none}
+button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}
+button[disabled],html input[disabled]{cursor:default}
+input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0}
+button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
+textarea{overflow:auto;vertical-align:top}
+table{border-collapse:collapse;border-spacing:0}
+*,*::before,*::after{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
+html,body{font-size:100%}
+body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;font-weight:400;font-style:normal;line-height:1;position:relative;cursor:auto;tab-size:4;word-wrap:anywhere;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}
+a:hover{cursor:pointer}
+img,object,embed{max-width:100%;height:auto}
+object,embed{height:100%}
+img{-ms-interpolation-mode:bicubic}
+.left{float:left!important}
+.right{float:right!important}
+.text-left{text-align:left!important}
+.text-right{text-align:right!important}
+.text-center{text-align:center!important}
+.text-justify{text-align:justify!important}
+.hide{display:none}
+img,object,svg{display:inline-block;vertical-align:middle}
+textarea{height:auto;min-height:50px}
+select{width:100%}
+.subheader,.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{line-height:1.45;color:#7a2518;font-weight:400;margin-top:0;margin-bottom:.25em}
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6,pre,form,p,blockquote,th,td{margin:0;padding:0}
+a{color:#2156a5;text-decoration:underline;line-height:inherit}
+a:hover,a:focus{color:#1d4b8f}
+a img{border:0}
+p{font-family:inherit;font-weight:400;font-size:1em;line-height:1.6;margin-bottom:1.25em;text-rendering:optimizeLegibility}
+p aside{font-size:.875em;line-height:1.35;font-style:italic}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{font-family:"Open Sans","DejaVu Sans",sans-serif;font-weight:300;font-style:normal;color:#ba3925;text-rendering:optimizeLegibility;margin-top:1em;margin-bottom:.5em;line-height:1.0125em}
+h1 small,h2 small,h3 small,#toctitle small,.sidebarblock>.content>.title small,h4 small,h5 small,h6 small{font-size:60%;color:#e99b8f;line-height:0}
+h1{font-size:2.125em}
+h2{font-size:1.6875em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.375em}
+h4,h5{font-size:1.125em}
+h6{font-size:1em}
+hr{border:solid #dddddf;border-width:1px 0 0;clear:both;margin:1.25em 0 1.1875em;height:0}
+em,i{font-style:italic;line-height:inherit}
+strong,b{font-weight:bold;line-height:inherit}
+small{font-size:60%;line-height:inherit}
+code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;color:rgba(0,0,0,.9)}
+ul,ol,dl{font-size:1em;line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
+ul,ol{margin-left:1.5em}
+ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0;font-size:1em}
+ul.square li ul,ul.circle li ul,ul.disc li ul{list-style:inherit}
+ul.square{list-style-type:square}
+ul.circle{list-style-type:circle}
+ul.disc{list-style-type:disc}
+ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
+dl dt{margin-bottom:.3125em;font-weight:bold}
+dl dd{margin-bottom:1.25em}
+abbr,acronym{text-transform:uppercase;font-size:90%;color:rgba(0,0,0,.8);border-bottom:1px dotted #ddd;cursor:help}
+abbr{text-transform:none}
+blockquote{margin:0 0 1.25em;padding:.5625em 1.25em 0 1.1875em;border-left:1px solid #ddd}
+blockquote cite{display:block;font-size:.9375em;color:rgba(0,0,0,.6)}
+blockquote cite::before{content:"\2014 \0020"}
+blockquote cite a,blockquote cite a:visited{color:rgba(0,0,0,.6)}
+blockquote,blockquote p{line-height:1.6;color:rgba(0,0,0,.85)}
+@media screen and (min-width:768px){h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2}
+h1{font-size:2.75em}
+h2{font-size:2.3125em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.6875em}
+h4{font-size:1.4375em}}
+table{background:#fff;margin-bottom:1.25em;border:solid 1px #dedede;word-wrap:normal}
+table thead,table tfoot{background:#f7f8f7}
+table thead tr th,table thead tr td,table tfoot tr th,table tfoot tr td{padding:.5em .625em .625em;font-size:inherit;color:rgba(0,0,0,.8);text-align:left}
+table tr th,table tr td{padding:.5625em .625em;font-size:inherit;color:rgba(0,0,0,.8)}
+table tr.even,table tr.alt{background:#f8f8f7}
+table thead tr th,table tfoot tr th,table tbody tr td,table tr td,table tfoot tr td{line-height:1.6}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2;word-spacing:-.05em}
+h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title strong,h4 strong,h5 strong,h6 strong{font-weight:400}
+.center{margin-left:auto;margin-right:auto}
+.stretch{width:100%}
+.clearfix::before,.clearfix::after,.float-group::before,.float-group::after{content:" ";display:table}
+.clearfix::after,.float-group::after{clear:both}
+:not(pre).nobreak{word-wrap:normal}
+:not(pre).nowrap{white-space:nowrap}
+:not(pre).pre-wrap{white-space:pre-wrap}
+:not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;-webkit-border-radius:4px;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed}
+pre{color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;line-height:1.45;text-rendering:optimizeSpeed}
+pre code,pre pre{color:inherit;font-size:inherit;line-height:inherit}
+pre>code{display:block}
+pre.nowrap,pre.nowrap pre{white-space:pre;word-wrap:normal}
+em em{font-style:normal}
+strong strong{font-weight:400}
+.keyseq{color:rgba(51,51,51,.8)}
+kbd{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;display:inline-block;color:rgba(0,0,0,.8);font-size:.65em;line-height:1.45;background:#f7f7f7;border:1px solid #ccc;-webkit-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 .1em white inset;box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 .1em #fff inset;margin:0 .15em;padding:.2em .5em;vertical-align:middle;position:relative;top:-.1em;white-space:nowrap}
+.keyseq kbd:first-child{margin-left:0}
+.keyseq kbd:last-child{margin-right:0}
+.menuseq,.menuref{color:#000}
+.menuseq b:not(.caret),.menuref{font-weight:inherit}
+.menuseq{word-spacing:-.02em}
+.menuseq b.caret{font-size:1.25em;line-height:.8}
+.menuseq i.caret{font-weight:bold;text-align:center;width:.45em}
+b.button::before,b.button::after{position:relative;top:-1px;font-weight:400}
+b.button::before{content:"[";padding:0 3px 0 2px}
+b.button::after{content:"]";padding:0 2px 0 3px}
+p a>code:hover{color:rgba(0,0,0,.9)}
+#header,#content,#footnotes,#footer{width:100%;margin-left:auto;margin-right:auto;margin-top:0;margin-bottom:0;max-width:62.5em;*zoom:1;position:relative;padding-left:.9375em;padding-right:.9375em}
+#header::before,#header::after,#content::before,#content::after,#footnotes::before,#footnotes::after,#footer::before,#footer::after{content:" ";display:table}
+#header::after,#content::after,#footnotes::after,#footer::after{clear:both}
+#content{margin-top:1.25em}
+#content::before{content:none}
+#header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
+#header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
+#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:-ms-flexbox;display:-webkit-flex;display:flex;-ms-flex-flow:row wrap;-webkit-flex-flow:row wrap;flex-flow:row wrap}
+#header .details span:first-child{margin-left:-.125em}
+#header .details span.email a{color:rgba(0,0,0,.85)}
+#header .details br{display:none}
+#header .details br+span::before{content:"\00a0\2013\00a0"}
+#header .details br+span.author::before{content:"\00a0\22c5\00a0";color:rgba(0,0,0,.85)}
+#header .details br+span#revremark::before{content:"\00a0|\00a0"}
+#header #revnumber{text-transform:capitalize}
+#header #revnumber::after{content:"\00a0"}
+#content>h1:first-child:not([class]){color:rgba(0,0,0,.85);border-bottom:1px solid #dddddf;padding-bottom:8px;margin-top:0;padding-top:1rem;margin-bottom:1.25rem}
+#toc{border-bottom:1px solid #e7e7e9;padding-bottom:.5em}
+#toc>ul{margin-left:.125em}
+#toc ul.sectlevel0>li>a{font-style:italic}
+#toc ul.sectlevel0 ul.sectlevel1{margin:.5em 0}
+#toc ul{font-family:"Open Sans","DejaVu Sans",sans-serif;list-style-type:none}
+#toc li{line-height:1.3334;margin-top:.3334em}
+#toc a{text-decoration:none}
+#toc a:active{text-decoration:underline}
+#toctitle{color:#7a2518;font-size:1.2em}
+@media screen and (min-width:768px){#toctitle{font-size:1.375em}
+body.toc2{padding-left:15em;padding-right:0}
+#toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
+#toc.toc2>ul{font-size:.9em;margin-bottom:0}
+#toc.toc2 ul ul{margin-left:0;padding-left:1em}
+#toc.toc2 ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
+body.toc2.toc-right{padding-left:0;padding-right:15em}
+body.toc2.toc-right #toc.toc2{border-right-width:0;border-left:1px solid #e7e7e9;left:auto;right:0}}
+@media screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
+#toc.toc2{width:20em}
+#toc.toc2 #toctitle{font-size:1.375em}
+#toc.toc2>ul{font-size:.95em}
+#toc.toc2 ul ul{padding-left:1.25em}
+body.toc2.toc-right{padding-left:0;padding-right:20em}}
+#content #toc{border-style:solid;border-width:1px;border-color:#e0e0dc;margin-bottom:1.25em;padding:1.25em;background:#f8f8f7;-webkit-border-radius:4px;border-radius:4px}
+#content #toc>:first-child{margin-top:0}
+#content #toc>:last-child{margin-bottom:0}
+#footer{max-width:none;background:rgba(0,0,0,.8);padding:1.25em}
+#footer-text{color:rgba(255,255,255,.8);line-height:1.44}
+#content{margin-bottom:.625em}
+.sect1{padding-bottom:.625em}
+@media screen and (min-width:768px){#content{margin-bottom:1.25em}
+.sect1{padding-bottom:1.25em}}
+.sect1:last-child{padding-bottom:0}
+.sect1+.sect1{border-top:1px solid #e7e7e9}
+#content h1>a.anchor,h2>a.anchor,h3>a.anchor,#toctitle>a.anchor,.sidebarblock>.content>.title>a.anchor,h4>a.anchor,h5>a.anchor,h6>a.anchor{position:absolute;z-index:1001;width:1.5ex;margin-left:-1.5ex;display:block;text-decoration:none!important;visibility:hidden;text-align:center;font-weight:400}
+#content h1>a.anchor::before,h2>a.anchor::before,h3>a.anchor::before,#toctitle>a.anchor::before,.sidebarblock>.content>.title>a.anchor::before,h4>a.anchor::before,h5>a.anchor::before,h6>a.anchor::before{content:"\00A7";font-size:.85em;display:block;padding-top:.1em}
+#content h1:hover>a.anchor,#content h1>a.anchor:hover,h2:hover>a.anchor,h2>a.anchor:hover,h3:hover>a.anchor,#toctitle:hover>a.anchor,.sidebarblock>.content>.title:hover>a.anchor,h3>a.anchor:hover,#toctitle>a.anchor:hover,.sidebarblock>.content>.title>a.anchor:hover,h4:hover>a.anchor,h4>a.anchor:hover,h5:hover>a.anchor,h5>a.anchor:hover,h6:hover>a.anchor,h6>a.anchor:hover{visibility:visible}
+#content h1>a.link,h2>a.link,h3>a.link,#toctitle>a.link,.sidebarblock>.content>.title>a.link,h4>a.link,h5>a.link,h6>a.link{color:#ba3925;text-decoration:none}
+#content h1>a.link:hover,h2>a.link:hover,h3>a.link:hover,#toctitle>a.link:hover,.sidebarblock>.content>.title>a.link:hover,h4>a.link:hover,h5>a.link:hover,h6>a.link:hover{color:#a53221}
+details,.audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock{margin-bottom:1.25em}
+details>summary:first-of-type{cursor:pointer;display:list-item;outline:none;margin-bottom:.75em}
+.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{text-rendering:optimizeLegibility;text-align:left;font-family:"Noto Serif","DejaVu Serif",serif;font-size:1rem;font-style:italic}
+table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
+.paragraph.lead>p,#preamble>.sectionbody>[class="paragraph"]:first-of-type p{font-size:1.21875em;line-height:1.6;color:rgba(0,0,0,.85)}
+table.tableblock #preamble>.sectionbody>[class="paragraph"]:first-of-type p{font-size:inherit}
+.admonitionblock>table{border-collapse:separate;border:0;background:none;width:100%}
+.admonitionblock>table td.icon{text-align:center;width:80px}
+.admonitionblock>table td.icon img{max-width:none}
+.admonitionblock>table td.icon .title{font-weight:bold;font-family:"Open Sans","DejaVu Sans",sans-serif;text-transform:uppercase}
+.admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6);word-wrap:anywhere}
+.admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content{border-style:solid;border-width:1px;border-color:#e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;-webkit-border-radius:4px;border-radius:4px}
+.exampleblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child{margin-bottom:0}
+.sidebarblock{border-style:solid;border-width:1px;border-color:#dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;-webkit-border-radius:4px;border-radius:4px}
+.sidebarblock>:first-child{margin-top:0}
+.sidebarblock>:last-child{margin-bottom:0}
+.sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
+.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.literalblock pre,.listingblock>.content>pre{-webkit-border-radius:4px;border-radius:4px;overflow-x:auto;padding:1em;font-size:.8125em}
+@media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
+@media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
+.literalblock pre,.listingblock>.content>pre:not(.highlight),.listingblock>.content>pre[class="highlight"],.listingblock>.content>pre[class^="highlight "]{background:#f7f7f8}
+.literalblock.output pre{color:#f7f7f8;background:rgba(0,0,0,.9)}
+.listingblock>.content{position:relative}
+.listingblock code[data-lang]::before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:inherit;opacity:.5}
+.listingblock:hover code[data-lang]::before{display:block}
+.listingblock.terminal pre .command::before{content:attr(data-prompt);padding-right:.5em;color:inherit;opacity:.5}
+.listingblock.terminal pre .command:not([data-prompt])::before{content:"$"}
+.listingblock pre.highlightjs{padding:0}
+.listingblock pre.highlightjs>code{padding:1em;-webkit-border-radius:4px;border-radius:4px}
+.listingblock pre.prettyprint{border-width:0}
+.prettyprint{background:#f7f7f8}
+pre.prettyprint .linenums{line-height:1.45;margin-left:2em}
+pre.prettyprint li{background:none;list-style-type:inherit;padding-left:0}
+pre.prettyprint li code[data-lang]::before{opacity:1}
+pre.prettyprint li:not(:first-child) code[data-lang]::before{display:none}
+table.linenotable{border-collapse:separate;border:0;margin-bottom:0;background:none}
+table.linenotable td[class]{color:inherit;vertical-align:top;padding:0;line-height:inherit;white-space:normal}
+table.linenotable td.code{padding-left:.75em}
+table.linenotable td.linenos{border-right:1px solid currentColor;opacity:.35;padding-right:.5em}
+pre.pygments .lineno{border-right:1px solid currentColor;opacity:.35;display:inline-block;margin-right:.75em}
+pre.pygments .lineno::before{content:"";margin-right:-.125em}
+.quoteblock{margin:0 1em 1.25em 1.5em;display:table}
+.quoteblock:not(.excerpt)>.title{margin-left:-1.5em;margin-bottom:.75em}
+.quoteblock blockquote,.quoteblock p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
+.quoteblock blockquote{margin:0;padding:0;border:0}
+.quoteblock blockquote::before{content:"\201c";float:left;font-size:2.75em;font-weight:bold;line-height:.6em;margin-left:-.6em;color:#7a2518;text-shadow:0 1px 2px rgba(0,0,0,.1)}
+.quoteblock blockquote>.paragraph:last-child p{margin-bottom:0}
+.quoteblock .attribution{margin-top:.75em;margin-right:.5ex;text-align:right}
+.verseblock{margin:0 1em 1.25em}
+.verseblock pre{font-family:"Open Sans","DejaVu Sans",sans;font-size:1.15rem;color:rgba(0,0,0,.85);font-weight:300;text-rendering:optimizeLegibility}
+.verseblock pre strong{font-weight:400}
+.verseblock .attribution{margin-top:1.25rem;margin-left:.5ex}
+.quoteblock .attribution,.verseblock .attribution{font-size:.9375em;line-height:1.45;font-style:italic}
+.quoteblock .attribution br,.verseblock .attribution br{display:none}
+.quoteblock .attribution cite,.verseblock .attribution cite{display:block;letter-spacing:-.025em;color:rgba(0,0,0,.6)}
+.quoteblock.abstract blockquote::before,.quoteblock.excerpt blockquote::before,.quoteblock .quoteblock blockquote::before{display:none}
+.quoteblock.abstract blockquote,.quoteblock.abstract p,.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{line-height:1.6;word-spacing:0}
+.quoteblock.abstract{margin:0 1em 1.25em;display:block}
+.quoteblock.abstract>.title{margin:0 0 .375em;font-size:1.15em;text-align:center}
+.quoteblock.excerpt>blockquote,.quoteblock .quoteblock{padding:0 0 .25em 1em;border-left:.25em solid #dddddf}
+.quoteblock.excerpt,.quoteblock .quoteblock{margin-left:0}
+.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{color:inherit;font-size:1.0625rem}
+.quoteblock.excerpt .attribution,.quoteblock .quoteblock .attribution{color:inherit;text-align:left;margin-right:0}
+p.tableblock:last-child{margin-bottom:0}
+td.tableblock>.content{margin-bottom:1.25em;word-wrap:anywhere}
+td.tableblock>.content>:last-child{margin-bottom:-1.25em}
+table.tableblock,th.tableblock,td.tableblock{border:0 solid #dedede}
+table.grid-all>*>tr>*{border-width:1px}
+table.grid-cols>*>tr>*{border-width:0 1px}
+table.grid-rows>*>tr>*{border-width:1px 0}
+table.frame-all{border-width:1px}
+table.frame-ends{border-width:1px 0}
+table.frame-sides{border-width:0 1px}
+table.frame-none>colgroup+*>:first-child>*,table.frame-sides>colgroup+*>:first-child>*{border-top-width:0}
+table.frame-none>:last-child>:last-child>*,table.frame-sides>:last-child>:last-child>*{border-bottom-width:0}
+table.frame-none>*>tr>:first-child,table.frame-ends>*>tr>:first-child{border-left-width:0}
+table.frame-none>*>tr>:last-child,table.frame-ends>*>tr>:last-child{border-right-width:0}
+table.stripes-all tr,table.stripes-odd tr:nth-of-type(odd),table.stripes-even tr:nth-of-type(even),table.stripes-hover tr:hover{background:#f8f8f7}
+th.halign-left,td.halign-left{text-align:left}
+th.halign-right,td.halign-right{text-align:right}
+th.halign-center,td.halign-center{text-align:center}
+th.valign-top,td.valign-top{vertical-align:top}
+th.valign-bottom,td.valign-bottom{vertical-align:bottom}
+th.valign-middle,td.valign-middle{vertical-align:middle}
+table thead th,table tfoot th{font-weight:bold}
+tbody tr th{background:#f7f8f7}
+tbody tr th,tbody tr th p,tfoot tr th,tfoot tr th p{color:rgba(0,0,0,.8);font-weight:bold}
+p.tableblock>code:only-child{background:none;padding:0}
+p.tableblock{font-size:1em}
+ol{margin-left:1.75em}
+ul li ol{margin-left:1.5em}
+dl dd{margin-left:1.125em}
+dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
+ol>li p,ul>li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
+ul.checklist,ul.none,ol.none,ul.no-bullet,ol.no-bullet,ol.unnumbered,ul.unstyled,ol.unstyled{list-style-type:none}
+ul.no-bullet,ol.no-bullet,ol.unnumbered{margin-left:.625em}
+ul.unstyled,ol.unstyled{margin-left:0}
+ul.checklist{margin-left:.625em}
+ul.checklist li>p:first-child>.fa-square-o:first-child,ul.checklist li>p:first-child>.fa-check-square-o:first-child{width:1.25em;font-size:.8em;position:relative;bottom:.125em}
+ul.checklist li>p:first-child>input[type="checkbox"]:first-child{margin-right:.25em}
+ul.inline{display:-ms-flexbox;display:-webkit-box;display:flex;-ms-flex-flow:row wrap;-webkit-flex-flow:row wrap;flex-flow:row wrap;list-style:none;margin:0 0 .625em -1.25em}
+ul.inline>li{margin-left:1.25em}
+.unstyled dl dt{font-weight:400;font-style:normal}
+ol.arabic{list-style-type:decimal}
+ol.decimal{list-style-type:decimal-leading-zero}
+ol.loweralpha{list-style-type:lower-alpha}
+ol.upperalpha{list-style-type:upper-alpha}
+ol.lowerroman{list-style-type:lower-roman}
+ol.upperroman{list-style-type:upper-roman}
+ol.lowergreek{list-style-type:lower-greek}
+.hdlist>table,.colist>table{border:0;background:none}
+.hdlist>table>tbody>tr,.colist>table>tbody>tr{background:none}
+td.hdlist1,td.hdlist2{vertical-align:top;padding:0 .625em}
+td.hdlist1{font-weight:bold;padding-bottom:1.25em}
+td.hdlist2{word-wrap:anywhere}
+.literalblock+.colist,.listingblock+.colist{margin-top:-.5em}
+.colist td:not([class]):first-child{padding:.4em .75em 0;line-height:1;vertical-align:top}
+.colist td:not([class]):first-child img{max-width:none}
+.colist td:not([class]):last-child{padding:.25em 0}
+.thumb,.th{line-height:0;display:inline-block;border:solid 4px #fff;-webkit-box-shadow:0 0 0 1px #ddd;box-shadow:0 0 0 1px #ddd}
+.imageblock.left{margin:.25em .625em 1.25em 0}
+.imageblock.right{margin:.25em 0 1.25em .625em}
+.imageblock>.title{margin-bottom:0}
+.imageblock.thumb,.imageblock.th{border-width:6px}
+.imageblock.thumb>.title,.imageblock.th>.title{padding:0 .125em}
+.image.left,.image.right{margin-top:.25em;margin-bottom:.25em;display:inline-block;line-height:0}
+.image.left{margin-right:.625em}
+.image.right{margin-left:.625em}
+a.image{text-decoration:none;display:inline-block}
+a.image object{pointer-events:none}
+sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
+sup.footnote a,sup.footnoteref a{text-decoration:none}
+sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+#footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
+#footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
+#footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
+#footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none;margin-left:-1.05em}
+#footnotes .footnote:last-of-type{margin-bottom:0}
+#content #footnotes{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
+.gist .file-data>table{border:0;background:#fff;width:100%;margin-bottom:0}
+.gist .file-data>table td.line-data{width:99%}
+div.unbreakable{page-break-inside:avoid}
+.big{font-size:larger}
+.small{font-size:smaller}
+.underline{text-decoration:underline}
+.overline{text-decoration:overline}
+.line-through{text-decoration:line-through}
+.aqua{color:#00bfbf}
+.aqua-background{background:#00fafa}
+.black{color:#000}
+.black-background{background:#000}
+.blue{color:#0000bf}
+.blue-background{background:#0000fa}
+.fuchsia{color:#bf00bf}
+.fuchsia-background{background:#fa00fa}
+.gray{color:#606060}
+.gray-background{background:#7d7d7d}
+.green{color:#006000}
+.green-background{background:#007d00}
+.lime{color:#00bf00}
+.lime-background{background:#00fa00}
+.maroon{color:#600000}
+.maroon-background{background:#7d0000}
+.navy{color:#000060}
+.navy-background{background:#00007d}
+.olive{color:#606000}
+.olive-background{background:#7d7d00}
+.purple{color:#600060}
+.purple-background{background:#7d007d}
+.red{color:#bf0000}
+.red-background{background:#fa0000}
+.silver{color:#909090}
+.silver-background{background:#bcbcbc}
+.teal{color:#006060}
+.teal-background{background:#007d7d}
+.white{color:#bfbfbf}
+.white-background{background:#fafafa}
+.yellow{color:#bfbf00}
+.yellow-background{background:#fafa00}
+span.icon>.fa{cursor:default}
+a span.icon>.fa{cursor:inherit}
+.admonitionblock td.icon [class^="fa icon-"]{font-size:2.5em;text-shadow:1px 1px 2px rgba(0,0,0,.5);cursor:default}
+.admonitionblock td.icon .icon-note::before{content:"\f05a";color:#19407c}
+.admonitionblock td.icon .icon-tip::before{content:"\f0eb";text-shadow:1px 1px 2px rgba(155,155,0,.8);color:#111}
+.admonitionblock td.icon .icon-warning::before{content:"\f071";color:#bf6900}
+.admonitionblock td.icon .icon-caution::before{content:"\f06d";color:#bf3400}
+.admonitionblock td.icon .icon-important::before{content:"\f06a";color:#bf0000}
+.conum[data-value]{display:inline-block;color:#fff!important;background:rgba(0,0,0,.8);-webkit-border-radius:50%;border-radius:50%;text-align:center;font-size:.75em;width:1.67em;height:1.67em;line-height:1.67em;font-family:"Open Sans","DejaVu Sans",sans-serif;font-style:normal;font-weight:bold}
+.conum[data-value] *{color:#fff!important}
+.conum[data-value]+b{display:none}
+.conum[data-value]::after{content:attr(data-value)}
+pre .conum[data-value]{position:relative;top:-.125em}
+b.conum *{color:inherit!important}
+.conum:not([data-value]):empty{display:none}
+dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
+h1,h2,p,td.content,span.alt{letter-spacing:-.01em}
+p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
+p,blockquote,dt,td.content,span.alt{font-size:1.0625rem}
+p{margin-bottom:1.25rem}
+.sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
+.exampleblock>.content{background:#fffef7;border-color:#e0e0dc;-webkit-box-shadow:0 1px 4px #e0e0dc;box-shadow:0 1px 4px #e0e0dc}
+.print-only{display:none!important}
+@page{margin:1.25cm .75cm}
+@media print{*{-webkit-box-shadow:none!important;box-shadow:none!important;text-shadow:none!important}
+html{font-size:80%}
+a{color:inherit!important;text-decoration:underline!important}
+a.bare,a[href^="#"],a[href^="mailto:"]{text-decoration:none!important}
+a[href^="http:"]:not(.bare)::after,a[href^="https:"]:not(.bare)::after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
+abbr[title]::after{content:" (" attr(title) ")"}
+pre,blockquote,tr,img,object,svg{page-break-inside:avoid}
+thead{display:table-header-group}
+svg{max-width:100%}
+p,blockquote,dt,td.content{font-size:1em;orphans:3;widows:3}
+h2,h3,#toctitle,.sidebarblock>.content>.title{page-break-after:avoid}
+#header,#content,#footnotes,#footer{max-width:none}
+#toc,.sidebarblock,.exampleblock>.content{background:none!important}
+#toc{border-bottom:1px solid #dddddf!important;padding-bottom:0!important}
+body.book #header{text-align:center}
+body.book #header>h1:first-child{border:0!important;margin:2.5em 0 1em}
+body.book #header .details{border:0!important;display:block;padding:0!important}
+body.book #header .details span:first-child{margin-left:0!important}
+body.book #header .details br{display:block}
+body.book #header .details br+span::before{content:none!important}
+body.book #toc{border:0!important;text-align:left!important;padding:0!important;margin:0!important}
+body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-break-before:always}
+.listingblock code[data-lang]::before{display:block}
+#footer{padding:0 .9375em}
+.hide-on-print{display:none!important}
+.print-only{display:block!important}
+.hide-for-print{display:none!important}
+.show-for-print{display:inherit!important}}
+@media print,amzn-kf8{#header>h1:first-child{margin-top:1.25rem}
+.sect1{padding:0!important}
+.sect1+.sect1{border:0}
+#footer{background:none}
+#footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
+@media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<h1>NSO and ConfD interaction</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_version_history">Version history</a></li>
+<li><a href="#_introduction">Introduction</a>
+<ul class="sectlevel2">
+<li><a href="#_what_you_will_learn">What you will learn</a></li>
+</ul>
+</li>
+<li><a href="#_prerequisites">Prerequisites</a></li>
+<li><a href="#_build_and_start_confd_and_example_application">Build and start ConfD and example application</a></li>
+<li><a href="#_build_and_link_netconf_ned_package_for_nso">Build and link NETCONF NED package for NSO</a>
+<ul class="sectlevel2">
+<li><a href="#_modify_confd_example_ports">Modify ConfD example ports</a></li>
+</ul>
+</li>
+<li><a href="#_create_and_configure_confd_device_in_nso">Create and configure ConfD device in NSO</a>
+<ul class="sectlevel2">
+<li><a href="#_configure_authgroup">Configure <code>authgroup</code></a></li>
+<li><a href="#_configure_and_synchronize_netconf_device">Configure and synchronize NETCONF device</a></li>
+</ul>
+</li>
+<li><a href="#_configure_confd_example_in_nso">Configure ConfD example in NSO</a></li>
+<li><a href="#_finalisation">Finalisation</a></li>
+<li><a href="#_conclusion">Conclusion</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_version_history">Version history</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 6.6666%;">
+<col style="width: 66.6666%;">
+<col style="width: 13.3333%;">
+<col style="width: 13.3335%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Document version</th>
+<th class="tableblock halign-left valign-top">Notes</th>
+<th class="tableblock halign-center valign-top">Date</th>
+<th class="tableblock halign-left valign-top">Author</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>0.0.1</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Initial version</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong>2020-12-22</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Michal Novák <a href="mailto:micnovak@cisco.com">micnovak@cisco.com</a></em></p></td>
+</tr>
+</tbody>
+</table>
+<!-- toc disabled -->
+</div>
+</div>
+<div class="sect1">
+<h2 id="_introduction">Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This note is a simple guide, that shows how to connect NETCONF compliant device
+with NSO. As a device, we will use ConfD example application <code>intro/1-2-3-start-query-model</code>.</p>
+</div>
+<div class="paragraph">
+<p>ConfD fully supports NETCONF. We can take advantage of NSO&#8217;s NETCONF NED (NETCONF Element Driver),
+which means out of the box interoperability between ConfD and NSO.
+We only need to configure the device and connection information, like ports, credentials and keys inside
+NSO.</p>
+</div>
+<div class="paragraph">
+<p>The description can be used with ConfD Premium or with ConfD Basic.</p>
+</div>
+<div class="paragraph">
+<p>ConfD Basic and NSO Free trial can be obtained from following sites:</p>
+</div>
+<div class="paragraph">
+<p><a href="https://developer.cisco.com/docs/nso" class="bare">https://developer.cisco.com/docs/nso</a> - <a href="https://developer.cisco.com/docs/nso/#!getting-nso/getting-nso">download link</a><br>
+<a href="https://www.tail-f.com/confd-basic" class="bare">https://www.tail-f.com/confd-basic</a> - <a href="https://developer.cisco.com/site/confD/downloads/">download link</a></p>
+</div>
+<div class="sect2">
+<h3 id="_what_you_will_learn">What you will learn</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>how to build and start ConfD and example application</p>
+</li>
+<li>
+<p>how to build and link NETCONF NED package for NSO</p>
+</li>
+<li>
+<p>how to create and configure ConfD device in NSO</p>
+</li>
+<li>
+<p>how configure the device datamodel (ConfD example) in NSO</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Each steps will be explained and followed by
+copy/paste commands that you can directly paste
+into your (linux) terminal (make sure all commands have executed -
+confirm last command with <kbd>ENTER</kbd>,  if needed)</p>
+</div>
+<div class="paragraph">
+<p>It is recommended to open 4 shells,
+ideally in a tiled mode (e.g. using <a href="https://github.com/tmux/tmux/wiki">tmux</a>).</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>shell 1</em> - to build and run ConfD example</p>
+</li>
+<li>
+<p><em>shell 2</em> - to build NSO directory and NED package, to run NSO itself</p>
+</li>
+<li>
+<p><em>shell 3</em> - to run ConfD CLI</p>
+</li>
+<li>
+<p><em>shell 4</em> - to run NSO CLI</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_prerequisites">Prerequisites</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>installed ConfD (with <code>examples.confd</code> package) - see <code>README</code> from ConfD package</p>
+</li>
+<li>
+<p>installed NSO - see <code>README</code> form NSO package</p>
+</li>
+<li>
+<p><code>xmlstarlet</code> (optional) for easier modification of <code>confd.conf</code> file (in Ubuntu use <code>apt-get install xmlstarlet</code>)</p>
+</li>
+<li>
+<p>build environment (<code>gcc</code>, <code>Makefile</code>) for ConfD examples (in Ubuntu use <code>apt-get install build-essential</code>)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>We will work in the <code>/tmp</code> directory. This is only optional and
+feel free to use a different directory with read and write access.</p>
+</div>
+<div class="paragraph">
+<p>To check ConfD and NSO installation, run following commands and check the output.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<em>version numbers may differ, according to your installation</em>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>run in <em>shell 1</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">confd --version</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>expected output:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">$ confd --version
+7.4</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>run in <em>shell 2</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">ncs --version</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>expected output:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">$ ncs --version
+5.5</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Many NSO commands start with <code>ncs</code> instead of <code>nso</code>. This is based on the name of NSO&#8217;s
+predecessor NCS.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_build_and_start_confd_and_example_application">Build and start ConfD and example application</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In the ConfD installation directory you can find examples under <code>examples.confd</code>
+subdirectory. We will use <code>examples.confd/intro/1-2-3-start-query-model</code> example.</p>
+</div>
+<div class="paragraph">
+<p>You can build and use example directly in the example directory, or you can copy it
+to some other directory. The latter is better idea, since we will modify <code>confd.conf</code> file
+(e.g. <code>cp -r $CONFD_DIR/examples.confd/intro/1-2-3-start-query-model /tmp; cd /tmp//1-2-3-start-query-model</code>).</p>
+</div>
+<div class="paragraph">
+<p>First, we will build the example. Go to the example directory and run
+in <em>shell 1</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">make clean all</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>expected output:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">$ make clean all
+rm -rf \
+	*.o *.a *.xso *.fxs *.xsd *.ccl \
+	*_proto.h \
+	./confd-cdb *.db aaa_cdb.* \
+	rollback*/rollback{0..999} rollback{0..999} \
+	cli-history \
+	host.key host.cert ssh-keydir \
+	*.log confderr.log.* \
+	etc *.access \
+	running.invalid global.data _tmp* local.data
+rm -rf dhcpd.h dhcpd_conf dhcpd.conf 2&gt; /dev/null || true
+rm -rf *log *trace cli-history 2&gt; /dev/null || true
+/confd-7.4.x86_64/bin/confdc --fail-on-warnings  -c -o dhcpd.fxs  dhcpd.yang
+/confd-7.4.x86_64/bin/confdc -c commands-j.cli
+/confd-7.4.x86_64/bin/confdc -c commands-c.cli
+mkdir -p ./confd-cdb
+cp /confd-7.4.x86_64/var/confd/cdb/aaa_init.xml ./confd-cdb
+ln -s /confd-7.4.x86_64/etc/confd/ssh ssh-keydir
+/confd-7.4.x86_64/bin/confdc --emit-h dhcpd.h dhcpd.fxs
+cc -c -o dhcpd_conf.o dhcpd_conf.c -Wall -g -I/confd-7.4.x86_64/include -DCONFD_C_PRODUCT_CONFD
+cc -o dhcpd_conf dhcpd_conf.o /confd-7.4.x86_64/lib/libconfd.a -lpthread -lm
+C build complete
+Build complete</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>NOTE:
+You can start and investigate example with Makefile target commands <code>make start</code>, <code>make cli-c</code>, etc.
+and stop it with <code>make stop</code> (see example README for details).</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_build_and_link_netconf_ned_package_for_nso">Build and link NETCONF NED package for NSO</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>First, we need to set-up NSO directory and enter it. Run in the <em>shell 2</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">ncs-project create nsotest
+cd nsotest</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+the older way was to use <code>ncs-setup --dest nsotest</code>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Next, we make and build NETCONF NED from the example YANG file(s) and link it to
+NSO packages. Run in the <em>shell 2</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">ncs-make-package \
+        --no-java \
+        --build \
+        --vendor Cisco \
+        --netconf-ned $CONFD_DIR/examples.confd/intro/1-2-3-start-query-model \
+        dhcpned  <i class="conum" data-value="1"></i><b>(1)</b>
+ncs-setup --package dhcpned --dest . <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>create NETCONF NED from YANG files (do not use java binding), you can skip <code>--build</code>, but then you need to build
+the package yourself with <code>make -C dhcpned/src all</code><br></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>add (link) NED to NSO packages</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To check the package is linked, run in the <em>shell 2</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">ls packages</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>the expected output (in the <em>shell 2</em>):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">dhcpned</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_modify_confd_example_ports">Modify ConfD example ports</h3>
+<div class="paragraph">
+<p>Before we start ConfD example, we need to modify <code>confd.conf</code> of the example,
+to use different CLI and NETCONF SSH ports, so they do not conflict with NSO
+CLI and NETCONF SSH ports (which are he same). Open <code>confd.conf</code> and add or modify:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>add <code>/confdConfig/cli/ssh/port</code> –&gt; <code>13022</code> (original <code>2022</code>)</p>
+</li>
+<li>
+<p>modify <code>/confdConfig/netconf/transport/ssh/port</code> –&gt; <code>14022</code> (oroginal `)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Corresponding <code>CLI</code> and NETCONF sections should look like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;cli&gt;
+  &lt;ssh&gt;
+    &lt;port&gt;13022&lt;/port&gt;
+  &lt;/ssh&gt;
+&lt;/cli&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml"> &lt;netconf&gt;   <i class="conum" data-value="1"></i><b>(1)</b>
+    &lt;transport&gt;
+      &lt;ssh&gt;
+        &lt;enabled&gt;true&lt;/enabled&gt;
+        &lt;ip&gt;127.0.0.1&lt;/ip&gt;
+        &lt;port&gt;14022&lt;/port&gt;
+      &lt;/ssh&gt;
+    &lt;/transport&gt;
+    ...
+  &lt;/netconf&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>There will be other elements in the <code>&lt;netconf&gt;</code> section, only changed part is displayed here.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>You can also use following <code>xmlstarlet</code> commands, to make modification automatically.
+Run in the <em>shell 1</em> following commands:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">export EXAMPLE_DIR=/tmp/1-2-3-start-query-model  <i class="conum" data-value="1"></i><b>(1)</b>
+xmlstarlet ed -L -O -N conf="http://tail-f.com/ns/confd_cfg/1.0" -s /conf:confdConfig -t elem -n cli ${EXAMPLE_DIR}//confd.conf
+xmlstarlet ed -L -O -N conf="http://tail-f.com/ns/confd_cfg/1.0" -s /conf:confdConfig/conf:cli -t elem -n ssh ${EXAMPLE_DIR}/confd.conf
+xmlstarlet ed -L -O -N conf="http://tail-f.com/ns/confd_cfg/1.0" -s /conf:confdConfig/conf:cli/conf:ssh -t elem -n port ${EXAMPLE_DIR}//confd.conf
+xmlstarlet ed -L -O -N conf="http://tail-f.com/ns/confd_cfg/1.0" -u "/conf:confdConfig/conf:cli/conf:ssh/conf:port" -v 13022 ${EXAMPLE_DIR}/confd.conf
+xmlstarlet ed -L -O -N conf="http://tail-f.com/ns/confd_cfg/1.0" -u "/conf:confdConfig/conf:netconf/conf:transport/conf:ssh/conf:port" -v 14022 ${EXAMPLE_DIR}/confd.conf</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>set <code>EXAMPLE_DIR</code> as needed</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To test the modification works, start the example (in the <em>shell 1</em>) with <code>make clean all start</code> and
+test NETCONF access. Run in the <em>shell 3</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">netconf-console --port 14022 --hello</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>NETCONF hello message should be returned.</p>
+</div>
+<div class="paragraph">
+<p>To test SSH CLI access, run in <em>shell 3</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">ssh admin@127.0.0.1 -p 13022</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After the password (default <code>admin</code>), ConfD CLI is entered.
+Use <code>exit</code> command to exit he CLI</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_create_and_configure_confd_device_in_nso">Create and configure ConfD device in NSO</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Once we have everything set-up, we can start configuring the ConfD example as NSO device.</p>
+</div>
+<div class="paragraph">
+<p>If you do not have ConfD example running from previous steps, start it in the <em>shell 1</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">make clean all start</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>after that, start NSO in <em>shell 2</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">ncs --with-package-reload</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>next, we can enter NSO CLI and configure the device. In <em>shell 3</em> run:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">ncs_cli -u admin -C</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>we should see NSO CLI prompt like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">admin connected from 127.0.0.1 using console on pc-test
+admin@ncs#</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>we can check our package (<code>dhcpned</code>) is correctly loaded, type in <em>shell 3</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">show packages</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>the output should look like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">admin@ncs# show packages
+packages package dhcpned-nc-1.0
+ package-version 1.0
+ description     "Generated netconf package"
+ ncs-min-version [ 5.5 ]
+ directory       ./state/packages-in-use/1/dhcpned
+ component dhcpned
+  ned netconf ned-id dhcpned-nc-1.0
+  ned device vendor Cisco
+ oper-status up</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>finally, we enter config mode with command (in the <em>shell 3</em>):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">config</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configure_authgroup">Configure <code>authgroup</code></h3>
+<div class="paragraph">
+<p>In order NSO device can connect to real NETCONF device, we need to
+provide authorization details. This is done by linking it with <code>authgroup</code>.
+We configure <code>authgroup</code> in the config mode of NSO CLI. Type in (or paste into) the <em>shell 3</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">devices authgroups group devnetconf
+default-map remote-name admin
+default-map remote-password admin
+commit
+top</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>you can verify <code>authgroup</code> configuration with command</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">do show running-config devices authgroups group devnetconf</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>the output (you can see the password is encrypted):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>admin@ncs(config)# do show running-config devices authgroups group devnetconf
+devices authgroups group devnetconf
+ default-map remote-name admin
+ default-map remote-password $9$zKHJM0RX2pfYCs6KL8pN2ZleIAQBt+wAJsuOwW+LRMY=
+!</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configure_and_synchronize_netconf_device">Configure and synchronize NETCONF device</h3>
+<div class="paragraph">
+<p>We have everything ready, to configure NETCONF device and connect running
+ConfD example with NSO. Type in (paste into) the <em>shell 3</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">devices device EX_NETCONF
+address 127.0.0.1
+port 14022
+authgroup devnetconf
+device-type netconf ned-id dhcpned
+state admin-state unlocked
+commit</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once device is configured, we can try to synchronize it, so we know connection to the device is
+correctly established. Type in the <em>shell 3</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">ssh fetch-host-keys
+sync-from</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>you should see output like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">admin@ncs(config-device-EX_NETCONF)# ssh fetch-host-keys
+result updated
+fingerprint {
+    algorithm ssh-rsa
+    value 61:46:3d:74:9d:3c:0f:26:30:2b:2a:1a:0f:c6:3d:3e
+}
+admin@ncs(config-device-EX_NETCONF)# sync-from
+result true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>to see how device is configured, type in the <em>shell 3</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">top
+do show running-config devices device EX_NETCONF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>the output should look like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>admin@ncs(config)# do show running-config devices device EX_NETCONF
+devices device EX_NETCONF
+ address   127.0.0.1
+ port      14022
+ ssh host-key ssh-rsa
+  key-data "AAAAB3NzaC1yc2EAAAADAQABAAABgQDnUZtw+eyGJkhJIrMAEjDlUkQ2rlHbe5F22uFzZOB9\nM01m7CqSag+cL0vOHnnaHwPSTscoVYn+ygVcJEtCRy+mbqEnbDzTy9PA0i8/HX6tGOOhOhGF\n/DeFNTsVE9/Yd3a+piS4ZiIHPItiVHs181JkXEiLT3JK+5787GQ/0AxRnOwFDG4YbznlD6v5\npUzxkLqSf2ZND8HtsguCzbYM5O2kzChYll9Dzk5Q2CrSC3rGS3Wh4ZkdBNw5/4M0UR0KoVVV\nPFVdv9kEKT+9TiFsf/WtGaOCnxgWwhc4iXztz8PYg7uFTUBvYj+W/bJEaoUvHgsud6OlexXF\nDpMCWynW4Ky2FobsN7VLTsDWGpQwcP+rF2BD1zbaEZnVZZ86FMT+WUwoccaqFU9B2eyIfkAM\nMf5JM2207bbtxTs7EcGXwWz5lJTJ9Ywa9UBTRq9vHa1m3Kcp7Bwtt3kupV07oHIgoXH+F/P5\nETfMIz3kSsCkiCTB/+wsNt4sV1+I5fA5ih4L2TE="
+ !
+ authgroup devnetconf
+ device-type netconf ned-id dhcpned-nc-1.0
+ state admin-state unlocked
+!</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configure_confd_example_in_nso">Configure ConfD example in NSO</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We have ConfD example attached to NSO as device (name <code>EX_NETCONF</code>). We can configure it.
+In <em>shell 3</em> type (make sure you are still in config mode):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">top
+devices device EX_NETCONF
+config dhcp default-lease-time 700s
+commit</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If everything goes well, <code>Commit complete.</code> message appears.</p>
+</div>
+<div class="paragraph">
+<p>To verify the configuration was performed on the ConfD, open example CLI and check it.
+In the <em>shell 4</em> go to the example directory (e.g. cd <code>/tmp//1-2-3-start-query-model</code>) and
+run following command to enter CLI:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">make cli-c</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>ConfD CLI is entered, the output (in the <em>shell 4</em>) should look like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">admin connected from 127.0.0.1 using console on pc-test
+pc-test#</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>once in the ConfD example CLI, type (in <em>shell 4</em>):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">show running-config dhcp</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>we can see in the output the <code>default-lease-time</code> value configured in the NSO CLI is
+applied on the ConfD example device:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">pc-test# show running-config  dhcp
+dhcp default-lease-time 700s</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the similar way we can display the same data in NSO CLI. Type in the <em>shell 3</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">top
+show full-configuration devices device EX_NETCONF config</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>output (<strong>shell 3</strong>):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">admin@ncs(config)# show full-configuration devices device EX_NETCONF config
+devices device EX_NETCONF
+ config
+  dhcp default-lease-time 700s
+ !
+!</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_finalisation">Finalisation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To stop NSO, type in the <em>shell 2</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">ncs --stop</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To stop example application, press in <em>shell 1</em> <kbd>CTRL-C</kbd> or type in
+the example directory (<code>/tmp/1-2-3-start-query-model</code>):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">make stop</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can delete example directory (<code>/tmp/1-2-3-start-query-model</code>) and NSO directory (<code>/tmp/nsotest</code>)
+as needed.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusion">Conclusion</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this note we have learnt how to connect and configure NETCONF device.
+To connect NETCONF device, we only had to configure it. No adaptation, filtering or
+bridging application was needed. This is advantage of NETCONF standard.</p>
+</div>
+<div class="paragraph">
+<p>We have used ConfD and ConfD example application (<code>intro/1-2-3-start-query-model</code>).
+ConfD is for NSO first class NETCONF compliant citizen, however the configuration steps described
+in this note can be used for any device, which is NETCONF compliant.</p>
+</div>
+<div class="paragraph">
+<p>NOTE:
+We have shown how to make NETCONF NED with commandline command <code>ncs-make-package</code>.
+There are also tools that can be used for this, like <a href="https://github.com/NSO-developer/pioneer">Pioneer</a> and
+NETCONF NED Builder (successor to Pioneer)</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2021-01-04 10:16:43 +0100
+</div>
+</div>
+</body>
+</html>
