@@ -368,7 +368,7 @@ table.tableblock #preamble > .sectionbody > .paragraph:first-of-type p { font-si
 
 .exampleblock.result > .content { -webkit-box-shadow: 0 1px 8px #eaeaea; box-shadow: 0 1px 8px #eaeaea; }
 
-.sidebarblock { border-style: solid; border-width: 1px; border-color: #e6e6e6; margin-bottom: 1.33333em; padding: 1.33333em; background: white; -webkit-border-radius: 3px; border-radius: 3px; }
+.sidebarblock { border-style: solid; border-width: 1px; border-color: #e6e6e6; margin-bottom: 1.33333em; padding: 1.33333em; background: #F9F9F9; -webkit-border-radius: 3px; border-radius: 3px; }
 .sidebarblock > :first-child { margin-top: 0; }
 .sidebarblock > :last-child { margin-bottom: 0; }
 .sidebarblock h1, .sidebarblock h2, .sidebarblock h3, .sidebarblock #toctitle, .sidebarblock > .content > .title, .sidebarblock h4, .sidebarblock h5, .sidebarblock h6, .sidebarblock p { color: #333333; }

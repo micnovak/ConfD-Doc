@@ -1,29 +1,31 @@
 # NSO and ConfD interaction 
-             
-Author: Michal Novák, micnovak@cisco.com  
-Version 0.0.1  
-Date: 22-Dec-2020
 
 Version history
      
 ```
--------------------------------------------------------------------------
-Version:  Date:         Author:                Description:
--------------------------------------------------------------------------
-0.0.1     22-Dec-2020   Michal Novák           Initial version
-                        micnovak@cisco.com
--------------------------------------------------------------------------                        
+--------------------------------------------------------------------------------
+Version:  Date:         Description:                        Author:             
+--------------------------------------------------------------------------------
+0.0.1     2020-12-22    Initial version                     Michal Novák        
+                                                            micnovak@cisco.com
+                                                              
+0.1.0     2021-01-04    Version for GitHub Pages            Michal Novák           
+                                                            micnovak@cisco.com
+
+0.2.0     2021-01-05    Updated document text               Michal Novák        
+                                                            micnovak@cisco.com               
+--------------------------------------------------------------------------------
 ```
 
 ## Introduction
 
-This note describes how to connect NETCONF compliant device with NSO. 
+This note describes how to connect NETCONF compliant device with NSO.
 We will use ConfD example application `intro/1-2-3-start-query-model` as the device.
 
 ConfD fully supports NETCONF and we can take advantage of NSO's NETCONF NED (NETCONF Element Driver).
-This means out of the box interoperability between ConfD and NSO. We only need to configure 
-the device (inside NSO's device data model) and provide connection information like ports, 
-credentials and keys. 
+This means out of the box interoperability between ConfD and NSO. We only need to configure
+the device (inside NSO's device data model) and provide connection information like ports,
+credentials and keys.
 
 The steps can be used with ConfD Premium or with ConfD Basic.
 
@@ -33,77 +35,108 @@ https://developer.cisco.com/docs/nso - [download link](https://developer.cisco.c
 https://www.tail-f.com/confd-basic - [download link](https://developer.cisco.com/site/confD/downloads/)
 
 ### What you will learn
-                                           
+
 * how to build and start ConfD and example application
 * how to build and link NETCONF NED package for NSO
 * how to create and configure ConfD device in NSO
 * how configure the device datamodel (ConfD example) in NSO
 
-Each steps will be explained and followed by 
-copy/paste commands that can be directly pasted
-into (linux) terminal.
-
-NOTE: make sure all commands have executed -  confirm last command with *[ENTER]*
-
 It is recommended to open 4 shells, ideally in a tiled mode (e.g. using [tmux](https://github.com/tmux/tmux/wiki)).
 
-* *shell 1* - to build and run ConfD example 
-* *shell 2* - to build NSO directory and NED package, to run NSO itself
-* *shell 3* - to run ConfD CLI
-* *shell 4* - to run NSO CLI
+* _shell 1_ - to build and run ConfD example
+* _shell 2_ - to build NSO directory and NED package, to run NSO itself
+* _shell 3_ - to run ConfD CLI
+* _shell 4_ - to run NSO CLI
+
+### Copy/Paste and Output blocks
+
+In this note you will find script examples, that can be directly pasted into
+shell or CLI terminal. We will use following block style for copy/paste ready
+script text:
+
+```shell
+confd --version
+```
+
+
+
+NOTE: make sure all commands have executed -  confirm last command with _[ENTER]_,
+if needed
+
+The output of the shell or CLI commands or file content will be displayed
+with in similar block with caption description:
+
+_output_
+```
+$ confd --version
+7.4
+```
 
 ## Prerequisites
 
 * installed ConfD (with `examples.confd` package) - see `README` from ConfD package
 * installed NSO - see `README` form NSO package
-* `xmlstarlet` (optional) for easier modification of `confd.conf` file (in Ubuntu use `apt-get install xmlstarlet`)
 * build environment (`gcc`, `Makefile`) to build ConfD example (in Ubuntu use `apt-get install build-essential`)
+* `xmlstarlet` (optional) for easier modification of `confd.conf` file (in Ubuntu use `apt-get install xmlstarlet`)
 
 We will work in the `/tmp` directory. This is optional. Feel free to use any different directory
 with read and write access.
 
 To check ConfD and NSO installation, run following commands and check the output.
 
-NOTE: *version numbers may differ, according to your installation* 
+NOTE: _version numbers may differ, according to your installation_
 
-run in *shell 1*:
+run in the _shell 1_:
+
 ```shell
 confd --version
 ```
-expected output:
-```shell
+
+_output_
+```
 $ confd --version 
 7.4
 ```
-run in *shell 2*:
+
+run in the _shell 2_:
+
 ```shell
 ncs --version
 ```
-expected output:
-```shell
+
+_output_
+```
 $ ncs --version 
 5.5
 ```
+
 NOTE: Many NSO commands start with `ncs` instead of `nso`. This is based on the name of NSO's
 predecessor NCS.
 
 ## Build and start ConfD and example application
 
-The `1-2-3-start-query-model` example can be found in the ConfD installation directory
+The `1-2-3-start-query-model` example can be found in the ConfD installation directory,
 under subdirectory `examples.confd/intro/1-2-3-start-query-model`.
 
 You can build and use example directly inside its directory, or you can copy it
-to some other directory. The latter is better idea, since we will modify `confd.conf` file
-(e.g. `cp -r $CONFD_DIR/examples.confd/intro/1-2-3-start-query-model /tmp; cd /tmp//1-2-3-start-query-model`).
+to some other directory. The latter is better idea, since we will modify the `confd.conf` file.
+
+E.g.
+
+```shell
+cp -r $CONFD_DIR/examples.confd/intro/1-2-3-start-query-model /tmp
+cd /tmp/1-2-3-start-query-model
+```
 
 First, we will build the example. Go to the example directory and run
-in *shell 1*:
+in the _shell 1_:
 
 ```shell
 make clean all
 ```
-expected output:
-```shell
+
+_output_
+```
 $ make clean all
 rm -rf \
 	*.o *.a *.xso *.fxs *.xsd *.ccl \
@@ -129,22 +162,23 @@ cc -o dhcpd_conf dhcpd_conf.o /confd-7.4.x86_64/lib/libconfd.a -lpthread -lm
 C build complete
 Build complete
 ```
-NOTE:
-You can start and investigate example with `Makefile` target commands `make start`, `make cli-c`, etc.
-You can stop it with `make stop` (see example's `README` for details).
+
+NOTE: You can start and investigate example with `Makefile` target commands `make start`, `make cli-c`, etc. You can stop it with `make stop` (see example's `README` for details).
 
 ## Build and link NETCONF NED package for NSO
 
-First, we need to set-up NSO directory and enter it. Run in the *shell 2*:
+First, we need to set-up NSO directory and enter it. Go to the directory for
+NSO project (e.g. `cd /tmp`) and run in the _shell 2_:
 
 ```shell
 ncs-project create nsotest
 cd nsotest
 ```
+
 NOTE: the older way was to use `ncs-setup --dest nsotest`
 
 Next, we make and build NETCONF NED from the example's YANG file(s) and link it to
-NSO packages. Run in the *shell 2*:
+the NSO packages. Run in the _shell 2_:
 
 ```shell
 ncs-make-package \
@@ -155,55 +189,57 @@ ncs-make-package \
         dhcpned  #<1>
 ncs-setup --package dhcpned --dest . #<2>
 ```
+
 <1> create NETCONF NED from YANG files (do not use java binding), you can skip `--build`, but then you need to build
-the package yourself with `make -C dhcpned/src all`  
+the package yourself with `make -C dhcpned/src all`
 <2> add (link) NED to NSO packages
 
-To check the package is linked, run in the *shell 2*:
+To check the package is linked, run in the _shell 2_:
 
 ```shell
 ls packages
 ```
-the expected output (in the *shell 2*):
-```shell
+
+_output_
+```
 dhcpned
 ```
 
 ### Modify ConfD example ports
 
-Before we start the ConfD example, we need to modify `confd.conf`
+Before we start the ConfD example, we need to modify its `confd.conf`
 to use different CLI and NETCONF SSH ports, so they do not conflict with NSO
-CLI and NETCONF SSH ports (which are he same). Open `confd.conf` and:
+CLI and NETCONF SSH ports (which are the same). Open `confd.conf` and:
 
 * add `/confdConfig/cli/ssh/port` --> `13022` (original `2024`)
 * modify `/confdConfig/netconf/transport/ssh/port` --> `14022` (original `2022`)
 
 Corresponding `CLI` and NETCONF sections should look like:
 
+_confd.conf_
 ```xml
 <cli>
   <ssh>
     <port>13022</port>
   </ssh>
 </cli>
+...
+<netconf>
+  <transport>
+    <ssh>
+      <enabled>true</enabled>
+      <ip>127.0.0.1</ip>
+      <port>14022</port>  <1>
+    </ssh>
+  </transport>
+  ...
+</netconf>
 ```
 
-```xml
- <netconf>
-    <transport>
-      <ssh>
-        <enabled>true</enabled>
-        <ip>127.0.0.1</ip>
-        <port>14022</port>  <1>
-      </ssh>
-    </transport>
-    ...
-  </netconf>
-```         
-<1> There will be other elements in the `<netconf>` section, only changed the port element.
- 
+<1> There will be other elements in the `<netconf>` section, only change the port element.
+
 You can use following `xmlstarlet` commands, to modify `confd.conf` automatically.
-Run in the *shell 1* following commands:
+Run in the _shell 1_ following commands:
 
 ```shell
 export EXAMPLE_DIR=/tmp/1-2-3-start-query-model  #<1>
@@ -213,17 +249,19 @@ xmlstarlet ed -L -O -N conf="http://tail-f.com/ns/confd_cfg/1.0" -s /conf:confdC
 xmlstarlet ed -L -O -N conf="http://tail-f.com/ns/confd_cfg/1.0" -u "/conf:confdConfig/conf:cli/conf:ssh/conf:port" -v 13022 ${EXAMPLE_DIR}/confd.conf
 xmlstarlet ed -L -O -N conf="http://tail-f.com/ns/confd_cfg/1.0" -u "/conf:confdConfig/conf:netconf/conf:transport/conf:ssh/conf:port" -v 14022 ${EXAMPLE_DIR}/confd.conf
 ```
+
 <1> set `EXAMPLE_DIR` as needed
 
-To test the modification works, start the example (in the *shell 1*) with `make clean all start` and
-test NETCONF access. Run in the *shell 3*:
+To test the modification works, start the example (in the _shell 1_) with `make clean all start` and
+test NETCONF access. Run in the _shell 3_:
 
 ```shell
 netconf-console --port 14022 --hello
 ```
+
 NETCONF hello message should be returned.
 
-To test SSH CLI access, run in *shell 3*:
+To test SSH CLI access, run in the _shell 3_:
 
 ```shell
 ssh admin@127.0.0.1 -p 13022
@@ -236,29 +274,39 @@ Use `exit` command to exit the CLI.
 
 Once we have everything set-up, we can start configuring the ConfD example as NSO device.
 
-If you do not have ConfD example running from previous steps, start it in the *shell 1*:
+If you do not have ConfD example running from previous steps, start it in the _shell 1_:
+
 ```shell
 make clean all start
 ```
-after that, start  NSO in the *shell 2*:
+
+after that, start NSO in the _shell 2_:
+
 ```shell
 ncs --with-package-reload
 ```
-next, we can enter NSO CLI and configure the device. In the *shell 3* run:
+
+next, we can enter NSO CLI and configure the device. In the _shell 3_ run:
+
 ```shell
 ncs_cli -u admin -C
 ```
+
 we should see NSO CLI prompt like:
-```shell
+
+_output_
+```
 admin connected from 127.0.0.1 using console on pc-test
 admin@ncs#
 ```
-we can check our package (`dhcpned`) is correctly loaded, type in the *shell 3*:
+we can check our package (`dhcpned`) is correctly loaded, type in the _shell 3_:
+
 ```shell
 show packages
 ```
-the output should look like:
-```shell
+
+_output_
+```
 admin@ncs# show packages
 packages package dhcpned-nc-1.0
  package-version 1.0
@@ -270,7 +318,8 @@ packages package dhcpned-nc-1.0
   ned device vendor Cisco
  oper-status up
 ```
-finally, we enter config mode with command (in the *shell 3*):
+
+finally, we enter config mode with command (in the _shell 3_):
 
 ```shell
 config
@@ -280,7 +329,7 @@ config
 
 In order the NSO device can connect to the real NETCONF device, we need to
 provide authorization details. This is done by linking NSO device with `authgroup`.
-We configure `authgroup` in the config mode of NSO CLI. Type in (or paste into) the *shell 3*:
+We configure `authgroup` in the config mode of NSO CLI. Type in (or paste into) the _shell 3_:
 
 ```shell
 devices authgroups group devnetconf
@@ -289,11 +338,14 @@ default-map remote-password admin
 commit
 top
 ```
+
 you can verify `authgroup` configuration with command
+
 ```shell
 do show running-config devices authgroups group devnetconf
 ```
-the output (you can see the password is encrypted):
+
+_output_
 ```
 admin@ncs(config)# do show running-config devices authgroups group devnetconf
 devices authgroups group devnetconf
@@ -304,8 +356,8 @@ devices authgroups group devnetconf
 
 ### Configure and synchronize NETCONF device
 
-We have everything ready to configure NSO device and connect to ConfD (NETCONF) running 
-the example. Type in (paste into) the *shell 3*:
+We have everything ready to configure NSO device and connect to ConfD (NETCONF) running
+the example. Type in (paste into) the _shell 3_:
 
 ```shell
 devices device EX_NETCONF
@@ -316,14 +368,17 @@ device-type netconf ned-id dhcpned
 state admin-state unlocked
 commit
 ```
-Once device is configured, we can try to synchronize it, so we know connection to 
-the ConfD NETCONF device is correctly established. Type in the *shell 3*:
+
+Once device is configured, we can try to synchronize it, so we know connection to
+the ConfD NETCONF device is correctly established. Type in the _shell 3_:
+
 ```shell
 ssh fetch-host-keys
 sync-from
 ```
-you should see output like:
-```shell
+
+_output_
+```
 admin@ncs(config-device-EX_NETCONF)# ssh fetch-host-keys
 result updated
 fingerprint {
@@ -333,12 +388,15 @@ fingerprint {
 admin@ncs(config-device-EX_NETCONF)# sync-from
 result true
 ```
-to see how NSO device is configured, type in the *shell 3*:
+
+to see how NSO device is configured, type in the _shell 3_:
+
 ```shell
 top
 do show running-config devices device EX_NETCONF
 ```
-the output should look like:
+
+_output_
 ```
 admin@ncs(config)# do show running-config devices device EX_NETCONF 
 devices device EX_NETCONF
@@ -355,45 +413,56 @@ devices device EX_NETCONF
 
 ## Configure ConfD example in NSO
 
-We have ConfD example attached to NSO as device (name `EX_NETCONF`).
+We have ConfD example attached to the NSO as device (name `EX_NETCONF`).
 Now, we can configure example data model (directly in the NSO).
-In the *shell 3* type (make sure you are still in config mode):
+In the _shell 3_ type (make sure you are still in config mode):
+
 ```shell
 top
 devices device EX_NETCONF
 config dhcp default-lease-time 700s
 commit
 ```
-If everything goes well, `Commit complete.` message appears.
+
+If everything goes well, `Commit complete` message appears.
 
 To verify the configuration was performed on the ConfD, open example CLI and check it.
-In the *shell 4* go to the example directory (e.g. cd `/tmp//1-2-3-start-query-model`) and
+In the _shell 4_ go to the example directory (e.g. `cd /tmp/1-2-3-start-query-model`) and
 run following command to enter CLI:
+
 ```shell
 make cli-c
 ```
-ConfD CLI is entered, the output (in the *shell 4*) should look like:
-```shell
+
+_ConfD CLI is entered_
+```
 admin connected from 127.0.0.1 using console on pc-test
 pc-test#
 ```
-once in the ConfD example CLI, type (in the *shell 4*):
+
+once in the ConfD example CLI, type (in _shell 4_):
+
 ```shell
 show running-config dhcp
 ```
+
 we can see the `default-lease-time` value configured in the NSO CLI is
 applied and visible in the running configuration of the ConfD example device:
+
 ```shell
-pc-test# show running-config  dhcp   
+pc-test# show running-config  dhcp
 dhcp default-lease-time 700s
 ```
-In the similar way we can display the same data in NSO CLI. Type in the *shell 3*:
+
+In the similar way we can display the same data in the NSO CLI. Type in the _shell 3_:
+
 ```shell
 top
 show full-configuration devices device EX_NETCONF config
 ```
-output (*shell 3*):
-```shell
+
+_output:_
+```
 admin@ncs(config)# show full-configuration devices device EX_NETCONF config
 devices device EX_NETCONF
  config
@@ -404,16 +473,20 @@ devices device EX_NETCONF
 
 ## Stop and delete
 
-To stop NSO, type in the *shell 2*:
+To stop NSO, type in the _shell 2_:
+
 ```shell
 ncs --stop
 ```
-To stop ConfD example application, press in the *shell 1* *[CTRL-C]* or type in 
+
+To stop ConfD example application, press in the _shell 1_ _[CTRL-C]_ or type in
 the example directory (`/tmp/1-2-3-start-query-model`):
+
 ```shell
 make stop
-``` 
-If needed, you can delete the example directory (`/tmp/1-2-3-start-query-model`) and the NSO directory (`/tmp/nsotest`).
+```
+
+If needed, you can delete the example directory (`rm /tmp/1-2-3-start-query-model`) and the NSO directory (`rm /tmp/nsotest`).
 
 ## Conclusion
 
@@ -431,4 +504,3 @@ NOTE: We have shown how to make NETCONF NED with commandline command `ncs-make-p
 There are also tools that can be used for this, like [Pioneer](https://github.com/NSO-developer/pioneer) and
 NETCONF NED Builder (successor to Pioneer)
 <!-- Todo link to NED Builder>
-
