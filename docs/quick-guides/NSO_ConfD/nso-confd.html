@@ -377,7 +377,7 @@ table.tableblock #preamble > .sectionbody > .paragraph:first-of-type p { font-si
 
 .exampleblock.result > .content { -webkit-box-shadow: 0 1px 8px #eaeaea; box-shadow: 0 1px 8px #eaeaea; }
 
-.sidebarblock { border-style: solid; border-width: 1px; border-color: #e6e6e6; margin-bottom: 1.33333em; padding: 1.33333em; background: white; -webkit-border-radius: 3px; border-radius: 3px; }
+.sidebarblock { border-style: solid; border-width: 1px; border-color: #e6e6e6; margin-bottom: 1.33333em; padding: 1.33333em; background: #F9F9F9; -webkit-border-radius: 3px; border-radius: 3px; }
 .sidebarblock > :first-child { margin-top: 0; }
 .sidebarblock > :last-child { margin-bottom: 0; }
 .sidebarblock h1, .sidebarblock h2, .sidebarblock h3, .sidebarblock #toctitle, .sidebarblock > .content > .title, .sidebarblock h4, .sidebarblock h5, .sidebarblock h6, .sidebarblock p { color: #333333; }
@@ -663,6 +663,7 @@ h2 { color: #325D72; border-bottom: 1px solid #dddddd; }
 <li><a href="#_introduction">Introduction</a>
 <ul class="sectlevel2">
 <li><a href="#_what_you_will_learn">What you will learn</a></li>
+<li><a href="#_copypaste_and_output_blocks">Copy/Paste and Output blocks</a></li>
 </ul>
 </li>
 <li><a href="#_prerequisites">Prerequisites</a></li>
@@ -679,7 +680,7 @@ h2 { color: #325D72; border-bottom: 1px solid #dddddd; }
 </ul>
 </li>
 <li><a href="#_configure_confd_example_in_nso">Configure ConfD example in NSO</a></li>
-<li><a href="#_finalisation">Finalisation</a></li>
+<li><a href="#_stop_and_delete">Stop and delete</a></li>
 <li><a href="#_conclusion">Conclusion</a></li>
 </ul>
 </div>
@@ -716,6 +717,12 @@ h2 { color: #325D72; border-bottom: 1px solid #dddddd; }
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong>2021-01-04</strong></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>Michal Novák <a href="mailto:micnovak@cisco.com">micnovak@cisco.com</a></em></p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>0.2.0</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Updated document text</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong>2021-01-05</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Michal Novák <a href="mailto:micnovak@cisco.com">micnovak@cisco.com</a></em></p></td>
+</tr>
 </tbody>
 </table>
 <!-- toc disabled -->
@@ -725,17 +732,17 @@ h2 { color: #325D72; border-bottom: 1px solid #dddddd; }
 <h2 id="_introduction">Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This note is a simple guide, that shows how to connect NETCONF compliant device
-with NSO. As a device, we will use ConfD example application <code>intro/1-2-3-start-query-model</code>.</p>
+<p>This note describes how to connect NETCONF compliant device with NSO.
+We will use ConfD example application <code>intro/1-2-3-start-query-model</code> as the device.</p>
 </div>
 <div class="paragraph">
-<p>ConfD fully supports NETCONF. We can take advantage of NSO&#8217;s NETCONF NED (NETCONF Element Driver),
-which means out of the box interoperability between ConfD and NSO.
-We only need to configure the device and connection information, like ports, credentials and keys inside
-NSO.</p>
+<p>ConfD fully supports NETCONF and we can take advantage of NSO&#8217;s NETCONF NED (NETCONF Element Driver).
+This means out of the box interoperability between ConfD and NSO. We only need to configure
+the device (inside NSO&#8217;s device data model) and provide connection information like ports,
+credentials and keys.</p>
 </div>
 <div class="paragraph">
-<p>The description can be used with ConfD Premium or with ConfD Basic.</p>
+<p>The steps can be used with ConfD Premium or with ConfD Basic.</p>
 </div>
 <div class="paragraph">
 <p>ConfD Basic and NSO Free trial can be obtained from following sites:</p>
@@ -763,12 +770,6 @@ NSO.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>Each steps will be explained and followed by
-copy/paste commands that you can directly paste
-into your (linux) terminal (make sure all commands have executed -
-confirm last command with <kbd>ENTER</kbd>,  if needed)</p>
-</div>
-<div class="paragraph">
 <p>It is recommended to open 4 shells,
 ideally in a tiled mode (e.g. using <a href="https://github.com/tmux/tmux/wiki">tmux</a>).</p>
 </div>
@@ -789,6 +790,42 @@ ideally in a tiled mode (e.g. using <a href="https://github.com/tmux/tmux/wiki">
 </ul>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_copypaste_and_output_blocks">Copy/Paste and Output blocks</h3>
+<div class="paragraph">
+<p>In this note you will find script examples, that can be directly pasted into
+shell or CLI terminal. We will use following block style for copy/paste ready
+script text:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">confd --version</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+make sure all commands have executed -  confirm last command with <kbd>ENTER</kbd>,
+      if needed
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The output of the shell or CLI commands or file content will be displayed
+with following block style:</p>
+</div>
+<div class="listingblock sidebarblock">
+<div class="content">
+<pre>$ confd --version
+7.4</pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -803,16 +840,16 @@ ideally in a tiled mode (e.g. using <a href="https://github.com/tmux/tmux/wiki">
 <p>installed NSO - see <code>README</code> form NSO package</p>
 </li>
 <li>
-<p><code>xmlstarlet</code> (optional) for easier modification of <code>confd.conf</code> file (in Ubuntu use <code>apt-get install xmlstarlet</code>)</p>
+<p>build environment (<code>gcc</code>, <code>Makefile</code>) to build ConfD example (in Ubuntu use <code>apt-get install build-essential</code>)</p>
 </li>
 <li>
-<p>build environment (<code>gcc</code>, <code>Makefile</code>) for ConfD examples (in Ubuntu use <code>apt-get install build-essential</code>)</p>
+<p><code>xmlstarlet</code> (optional) for easier modification of <code>confd.conf</code> file (in Ubuntu use <code>apt-get install xmlstarlet</code>)</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>We will work in the <code>/tmp</code> directory. This is only optional and
-feel free to use a different directory with read and write access.</p>
+<p>We will work in the <code>/tmp</code> directory. This is optional. Feel free to use any different directory
+with read and write access.</p>
 </div>
 <div class="paragraph">
 <p>To check ConfD and NSO installation, run following commands and check the output.</p>
@@ -830,37 +867,31 @@ feel free to use a different directory with read and write access.</p>
 </table>
 </div>
 <div class="paragraph">
-<p>run in <em>shell 1</em>:</p>
+<p>run in the <em>shell 1</em>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">confd --version</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>expected output:</p>
-</div>
-<div class="listingblock">
+<div class="listingblock sidebarblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell">$ confd --version
-7.4</code></pre>
+<pre>$ confd --version
+7.4</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>run in <em>shell 2</em>:</p>
+<p>run in the <em>shell 2</em>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">ncs --version</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>expected output:</p>
-</div>
-<div class="listingblock">
+<div class="listingblock sidebarblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell">$ ncs --version
-5.5</code></pre>
+<pre>$ ncs --version
+5.5</pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -882,29 +913,34 @@ predecessor NCS.
 <h2 id="_build_and_start_confd_and_example_application">Build and start ConfD and example application</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In the ConfD installation directory you can find examples under <code>examples.confd</code>
-subdirectory. We will use <code>examples.confd/intro/1-2-3-start-query-model</code> example.</p>
+<p>The <code>1-2-3-start-query-model</code> example can be found in the ConfD installation directory,
+under subdirectory <code>examples.confd/intro/1-2-3-start-query-model</code>.</p>
 </div>
 <div class="paragraph">
-<p>You can build and use example directly in the example directory, or you can copy it
-to some other directory. The latter is better idea, since we will modify <code>confd.conf</code> file
-(e.g. <code>cp -r $CONFD_DIR/examples.confd/intro/1-2-3-start-query-model /tmp; cd /tmp//1-2-3-start-query-model</code>).</p>
+<p>You can build and use example directly inside its directory, or you can copy it
+to some other directory. The latter is better idea, since we will modify the <code>confd.conf</code> file.</p>
+</div>
+<div class="paragraph">
+<p>E.g.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">cp -r $CONFD_DIR/examples.confd/intro/1-2-3-start-query-model /tmp
+cd /tmp/1-2-3-start-query-model</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>First, we will build the example. Go to the example directory and run
-in <em>shell 1</em>:</p>
+in the <em>shell 1</em>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">make clean all</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>expected output:</p>
-</div>
-<div class="listingblock">
+<div class="listingblock sidebarblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell">$ make clean all
+<pre>$ make clean all
 rm -rf \
 	*.o *.a *.xso *.fxs *.xsd *.ccl \
 	*_proto.h \
@@ -927,13 +963,20 @@ ln -s /confd-7.4.x86_64/etc/confd/ssh ssh-keydir
 cc -c -o dhcpd_conf.o dhcpd_conf.c -Wall -g -I/confd-7.4.x86_64/include -DCONFD_C_PRODUCT_CONFD
 cc -o dhcpd_conf dhcpd_conf.o /confd-7.4.x86_64/lib/libconfd.a -lpthread -lm
 C build complete
-Build complete</code></pre>
+Build complete</pre>
 </div>
 </div>
-<div class="paragraph">
-<p>NOTE:
-You can start and investigate example with Makefile target commands <code>make start</code>, <code>make cli-c</code>, etc.
-and stop it with <code>make stop</code> (see example README for details).</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You can start and investigate example with <code>Makefile</code> target commands <code>make start</code>, <code>make cli-c</code>, etc. You can stop it with <code>make stop</code> (see example&#8217;s <code>README</code> for details).
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -941,7 +984,8 @@ and stop it with <code>make stop</code> (see example README for details).</p>
 <h2 id="_build_and_link_netconf_ned_package_for_nso">Build and link NETCONF NED package for NSO</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>First, we need to set-up NSO directory and enter it. Run in the <em>shell 2</em>:</p>
+<p>First, we need to set-up NSO directory and enter it. Go to the directory for
+NSO project (e.g. <code>cd /tmp</code>) and run in the <em>shell 2</em>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -962,8 +1006,8 @@ the older way was to use <code>ncs-setup --dest nsotest</code>
 </table>
 </div>
 <div class="paragraph">
-<p>Next, we make and build NETCONF NED from the example YANG file(s) and link it to
-NSO packages. Run in the <em>shell 2</em>:</p>
+<p>Next, we make and build NETCONF NED from the example&#8217;s YANG file(s) and link it to
+the NSO packages. Run in the <em>shell 2</em>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -981,7 +1025,7 @@ ncs-setup --package dhcpned --dest . <i class="conum" data-value="2"></i><b>(2)<
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
 <td>create NETCONF NED from YANG files (do not use java binding), you can skip <code>--build</code>, but then you need to build
-the package yourself with <code>make -C dhcpned/src all</code><br></td>
+the package yourself with <code>make -C dhcpned/src all</code></td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -997,67 +1041,62 @@ the package yourself with <code>make -C dhcpned/src all</code><br></td>
 <pre class="highlight"><code class="language-shell" data-lang="shell">ls packages</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>the expected output (in the <em>shell 2</em>):</p>
-</div>
-<div class="listingblock">
+<div class="listingblock sidebarblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell">dhcpned</code></pre>
+<pre>dhcpned</pre>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_modify_confd_example_ports">Modify ConfD example ports</h3>
 <div class="paragraph">
-<p>Before we start ConfD example, we need to modify <code>confd.conf</code> of the example,
+<p>Before we start the ConfD example, we need to modify its <code>confd.conf</code>
 to use different CLI and NETCONF SSH ports, so they do not conflict with NSO
-CLI and NETCONF SSH ports (which are he same). Open <code>confd.conf</code> and add or modify:</p>
+CLI and NETCONF SSH ports (which are the same). Open <code>confd.conf</code> and:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>add <code>/confdConfig/cli/ssh/port</code> –&gt; <code>13022</code> (original <code>2022</code>)</p>
+<p>add <code>/confdConfig/cli/ssh/port</code> -&#8594; <code>13022</code> (original <code>2024</code>)</p>
 </li>
 <li>
-<p>modify <code>/confdConfig/netconf/transport/ssh/port</code> –&gt; <code>14022</code> (oroginal `)</p>
+<p>modify <code>/confdConfig/netconf/transport/ssh/port</code> -&#8594; <code>14022</code> (original <code>2022</code>)</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
 <p>Corresponding <code>CLI</code> and NETCONF sections should look like:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock sidebarblock">
+<div class="title">confd.conf</div>
 <div class="content">
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;cli&gt;
   &lt;ssh&gt;
     &lt;port&gt;13022&lt;/port&gt;
   &lt;/ssh&gt;
-&lt;/cli&gt;</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml"> &lt;netconf&gt;   <i class="conum" data-value="1"></i><b>(1)</b>
-    &lt;transport&gt;
-      &lt;ssh&gt;
-        &lt;enabled&gt;true&lt;/enabled&gt;
-        &lt;ip&gt;127.0.0.1&lt;/ip&gt;
-        &lt;port&gt;14022&lt;/port&gt;
-      &lt;/ssh&gt;
-    &lt;/transport&gt;
-    ...
-  &lt;/netconf&gt;</code></pre>
+&lt;/cli&gt;
+...
+&lt;netconf&gt;
+  &lt;transport&gt;
+    &lt;ssh&gt;
+      &lt;enabled&gt;true&lt;/enabled&gt;
+      &lt;ip&gt;127.0.0.1&lt;/ip&gt;
+      &lt;port&gt;14022&lt;/port&gt;  <i class="conum" data-value="1"></i><b>(1)</b>
+    &lt;/ssh&gt;
+  &lt;/transport&gt;
+  ...
+&lt;/netconf&gt;</code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>There will be other elements in the <code>&lt;netconf&gt;</code> section, only changed part is displayed here.</td>
+<td>There will be other elements in the <code>&lt;netconf&gt;</code> section, only change the port element.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>You can also use following <code>xmlstarlet</code> commands, to make modification automatically.
+<p>You can use following <code>xmlstarlet</code> commands, to modify <code>confd.conf</code> automatically.
 Run in the <em>shell 1</em> following commands:</p>
 </div>
 <div class="listingblock">
@@ -1091,7 +1130,7 @@ test NETCONF access. Run in the <em>shell 3</em>:</p>
 <p>NETCONF hello message should be returned.</p>
 </div>
 <div class="paragraph">
-<p>To test SSH CLI access, run in <em>shell 3</em>:</p>
+<p>To test SSH CLI access, run in the <em>shell 3</em>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1099,8 +1138,8 @@ test NETCONF access. Run in the <em>shell 3</em>:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>After the password (default <code>admin</code>), ConfD CLI is entered.
-Use <code>exit</code> command to exit he CLI</p>
+<p>After the password is entered (default <code>admin</code>), ConfD CLI prompt appears.
+Use <code>exit</code> command to exit the CLI.</p>
 </div>
 </div>
 </div>
@@ -1120,7 +1159,7 @@ Use <code>exit</code> command to exit he CLI</p>
 </div>
 </div>
 <div class="paragraph">
-<p>after that, start NSO in <em>shell 2</em>:</p>
+<p>after that, start NSO in the <em>shell 2</em>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1128,7 +1167,7 @@ Use <code>exit</code> command to exit he CLI</p>
 </div>
 </div>
 <div class="paragraph">
-<p>next, we can enter NSO CLI and configure the device. In <em>shell 3</em> run:</p>
+<p>next, we can enter NSO CLI and configure the device. In the <em>shell 3</em> run:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1138,26 +1177,23 @@ Use <code>exit</code> command to exit he CLI</p>
 <div class="paragraph">
 <p>we should see NSO CLI prompt like:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock sidebarblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell">admin connected from 127.0.0.1 using console on pc-test
-admin@ncs#</code></pre>
+<pre>admin connected from 127.0.0.1 using console on pc-test
+admin@ncs#</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>we can check our package (<code>dhcpned</code>) is correctly loaded, type in <em>shell 3</em>:</p>
+<p>we can check our package (<code>dhcpned</code>) is correctly loaded, type in the <em>shell 3</em>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">show packages</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>the output should look like:</p>
-</div>
-<div class="listingblock">
+<div class="listingblock sidebarblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell">admin@ncs# show packages
+<pre>admin@ncs# show packages
 packages package dhcpned-nc-1.0
  package-version 1.0
  description     "Generated netconf package"
@@ -1166,7 +1202,7 @@ packages package dhcpned-nc-1.0
  component dhcpned
   ned netconf ned-id dhcpned-nc-1.0
   ned device vendor Cisco
- oper-status up</code></pre>
+ oper-status up</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1180,8 +1216,8 @@ packages package dhcpned-nc-1.0
 <div class="sect2">
 <h3 id="_configure_authgroup">Configure <code>authgroup</code></h3>
 <div class="paragraph">
-<p>In order NSO device can connect to real NETCONF device, we need to
-provide authorization details. This is done by linking it with <code>authgroup</code>.
+<p>In order the NSO device can connect to the real NETCONF device, we need to
+provide authorization details. This is done by linking NSO device with <code>authgroup</code>.
 We configure <code>authgroup</code> in the config mode of NSO CLI. Type in (or paste into) the <em>shell 3</em>:</p>
 </div>
 <div class="listingblock">
@@ -1201,10 +1237,7 @@ top</code></pre>
 <pre class="highlight"><code class="language-shell" data-lang="shell">do show running-config devices authgroups group devnetconf</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>the output (you can see the password is encrypted):</p>
-</div>
-<div class="listingblock">
+<div class="listingblock sidebarblock">
 <div class="content">
 <pre>admin@ncs(config)# do show running-config devices authgroups group devnetconf
 devices authgroups group devnetconf
@@ -1217,8 +1250,8 @@ devices authgroups group devnetconf
 <div class="sect2">
 <h3 id="_configure_and_synchronize_netconf_device">Configure and synchronize NETCONF device</h3>
 <div class="paragraph">
-<p>We have everything ready, to configure NETCONF device and connect running
-ConfD example with NSO. Type in (paste into) the <em>shell 3</em>:</p>
+<p>We have everything ready to configure NSO device and connect to ConfD (NETCONF) running
+the example. Type in (paste into) the <em>shell 3</em>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1232,8 +1265,8 @@ commit</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Once device is configured, we can try to synchronize it, so we know connection to the device is
-correctly established. Type in the <em>shell 3</em>:</p>
+<p>Once device is configured, we can try to synchronize it, so we know connection to
+the ConfD NETCONF device is correctly established.  Type in the <em>shell 3</em>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1241,23 +1274,20 @@ correctly established. Type in the <em>shell 3</em>:</p>
 sync-from</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>you should see output like:</p>
-</div>
-<div class="listingblock">
+<div class="listingblock sidebarblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell">admin@ncs(config-device-EX_NETCONF)# ssh fetch-host-keys
+<pre>admin@ncs(config-device-EX_NETCONF)# ssh fetch-host-keys
 result updated
 fingerprint {
     algorithm ssh-rsa
     value 61:46:3d:74:9d:3c:0f:26:30:2b:2a:1a:0f:c6:3d:3e
 }
 admin@ncs(config-device-EX_NETCONF)# sync-from
-result true</code></pre>
+result true</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>to see how device is configured, type in the <em>shell 3</em>:</p>
+<p>to see how NSO device is configured, type in the <em>shell 3</em>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1265,10 +1295,7 @@ result true</code></pre>
 do show running-config devices device EX_NETCONF</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>the output should look like:</p>
-</div>
-<div class="listingblock">
+<div class="listingblock sidebarblock">
 <div class="content">
 <pre>admin@ncs(config)# do show running-config devices device EX_NETCONF
 devices device EX_NETCONF
@@ -1290,8 +1317,9 @@ devices device EX_NETCONF
 <h2 id="_configure_confd_example_in_nso">Configure ConfD example in NSO</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>We have ConfD example attached to NSO as device (name <code>EX_NETCONF</code>). We can configure it.
-In <em>shell 3</em> type (make sure you are still in config mode):</p>
+<p>We have ConfD example attached to the NSO as device (name <code>EX_NETCONF</code>).
+Now, we can configure example data model (directly in the NSO).
+In the <em>shell 3</em> type (make sure you are still in config mode):</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1302,11 +1330,11 @@ commit</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If everything goes well, <code>Commit complete.</code> message appears.</p>
+<p>If everything goes well, <code>Commit complete</code> message appears.</p>
 </div>
 <div class="paragraph">
 <p>To verify the configuration was performed on the ConfD, open example CLI and check it.
-In the <em>shell 4</em> go to the example directory (e.g. cd <code>/tmp//1-2-3-start-query-model</code>) and
+In the <em>shell 4</em> go to the example directory (e.g. <code>cd /tmp/1-2-3-start-query-model</code>) and
 run following command to enter CLI:</p>
 </div>
 <div class="listingblock">
@@ -1314,10 +1342,8 @@ run following command to enter CLI:</p>
 <pre class="highlight"><code class="language-shell" data-lang="shell">make cli-c</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>ConfD CLI is entered, the output (in the <em>shell 4</em>) should look like:</p>
-</div>
 <div class="listingblock">
+<div class="title">ConfD CLI is entered</div>
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">admin connected from 127.0.0.1 using console on pc-test
 pc-test#</code></pre>
@@ -1332,17 +1358,17 @@ pc-test#</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>we can see in the output the <code>default-lease-time</code> value configured in the NSO CLI is
-applied on the ConfD example device:</p>
+<p>we can see the <code>default-lease-time</code> value configured in the NSO CLI is
+applied and visible in the running configuration of the ConfD example device:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock sidebarblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell">pc-test# show running-config  dhcp
-dhcp default-lease-time 700s</code></pre>
+<pre>pc-test# show running-config  dhcp
+dhcp default-lease-time 700s</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>In the similar way we can display the same data in NSO CLI. Type in the <em>shell 3</em>:</p>
+<p>In the similar way we can display the same data in the NSO CLI. Type in the <em>shell 3</em>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1350,23 +1376,20 @@ dhcp default-lease-time 700s</code></pre>
 show full-configuration devices device EX_NETCONF config</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>output (<strong>shell 3</strong>):</p>
-</div>
-<div class="listingblock">
+<div class="listingblock sidebarblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell">admin@ncs(config)# show full-configuration devices device EX_NETCONF config
+<pre>admin@ncs(config)# show full-configuration devices device EX_NETCONF config
 devices device EX_NETCONF
  config
   dhcp default-lease-time 700s
  !
-!</code></pre>
+!</pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_finalisation">Finalisation</h2>
+<h2 id="_stop_and_delete">Stop and delete</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>To stop NSO, type in the <em>shell 2</em>:</p>
@@ -1377,7 +1400,7 @@ devices device EX_NETCONF
 </div>
 </div>
 <div class="paragraph">
-<p>To stop example application, press in <em>shell 1</em> <kbd>CTRL-C</kbd> or type in
+<p>To stop ConfD example application, press in the <em>shell 1</em> <kbd>CTRL-C</kbd> or type in
 the example directory (<code>/tmp/1-2-3-start-query-model</code>):</p>
 </div>
 <div class="listingblock">
@@ -1386,8 +1409,7 @@ the example directory (<code>/tmp/1-2-3-start-query-model</code>):</p>
 </div>
 </div>
 <div class="paragraph">
-<p>You can delete example directory (<code>/tmp/1-2-3-start-query-model</code>) and NSO directory (<code>/tmp/nsotest</code>)
-as needed.</p>
+<p>If needed, you can delete the example directory (<code>rm /tmp/1-2-3-start-query-model</code>) and the NSO directory (<code>rm /tmp/nsotest</code>).</p>
 </div>
 </div>
 </div>
@@ -1396,26 +1418,35 @@ as needed.</p>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In this note we have learnt how to connect and configure NETCONF device.
-To connect NETCONF device, we only had to configure it. No adaptation, filtering or
-bridging application was needed. This is advantage of NETCONF standard.</p>
+To connect NETCONF device, we have to configure it in NSO device data model.
+No adaptation, filtering or bridging application is needed.
+This is advantage of NETCONF standard.</p>
 </div>
 <div class="paragraph">
-<p>We have used ConfD and ConfD example application (<code>intro/1-2-3-start-query-model</code>).
-ConfD is for NSO first class NETCONF compliant citizen, however the configuration steps described
-in this note can be used for any device, which is NETCONF compliant.</p>
+<p>We have used ConfD and ConfD example application (<code>intro/1-2-3-start-query-model</code>)
+as NETCONF device.
+ConfD is NETCONF compliant and NSO is tested with ConfD. The steps described
+in this note can be used for with device, which is NETCONF compliant.</p>
 </div>
-<div class="paragraph">
-<p>NOTE:
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
 We have shown how to make NETCONF NED with commandline command <code>ncs-make-package</code>.
 There are also tools that can be used for this, like <a href="https://github.com/NSO-developer/pioneer">Pioneer</a> and
-NETCONF NED Builder (successor to Pioneer)</p>
+NETCONF NED Builder (successor to Pioneer)
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-01-04 11:21:31 +0100
 </div>
 </div>
 </body>
