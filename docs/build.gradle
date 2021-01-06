@@ -1,0 +1,22 @@
+// build documentation with `gradle clean asciidoctor`, located under build/docs
+
+plugins {
+    id 'org.asciidoctor.jvm.convert' version '3.1.0'
+}
+
+repositories {
+    jcenter()
+}
+
+apply plugin: 'java'
+
+
+asciidoctor {
+    sourceDir file('quick-guides')
+    sources {
+        include 'NSO_ConfD/nso-confd.adoc'
+    }
+    attributes 'stylesheet': 'res/adoc-github_modif.css'
+    outputDir file('build/docs')
+}
+
