@@ -667,7 +667,7 @@ h2 { color: #325D72; border-bottom: 1px solid #dddddd; }
 </ul>
 </li>
 <li><a href="#_prerequisites">Prerequisites</a></li>
-<li><a href="#_build_and_start_confd_and_example_application">Build and start ConfD and example application</a></li>
+<li><a href="#_build_and_start_confd_example_application">Build and start ConfD example application</a></li>
 <li><a href="#_build_and_link_netconf_ned_package_for_nso">Build and link NETCONF NED package for NSO</a>
 <ul class="sectlevel2">
 <li><a href="#_modify_confd_example_ports">Modify ConfD example ports</a></li>
@@ -720,7 +720,7 @@ h2 { color: #325D72; border-bottom: 1px solid #dddddd; }
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>0.2.0</strong></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Updated document text</p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong>2021-01-05</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong>2021-01-06</strong></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>Michal Novák <a href="mailto:micnovak@cisco.com">micnovak@cisco.com</a></em></p></td>
 </tr>
 </tbody>
@@ -733,12 +733,12 @@ h2 { color: #325D72; border-bottom: 1px solid #dddddd; }
 <div class="sectionbody">
 <div class="paragraph">
 <p>This note describes how to connect NETCONF compliant device with NSO.
-We will use ConfD example application <code>intro/1-2-3-start-query-model</code> as the device.</p>
+We will use ConfD example application <code>intro/1-2-3-start-query-model</code> as a NETCONF device.</p>
 </div>
 <div class="paragraph">
 <p>ConfD fully supports NETCONF and we can take advantage of NSO&#8217;s NETCONF NED (NETCONF Element Driver).
 This means out of the box interoperability between ConfD and NSO. We only need to configure
-the device (inside NSO&#8217;s device data model) and provide connection information like ports,
+the device (inside NSO&#8217;s <code>device</code> data model) and provide connection information like ports,
 credentials and keys.</p>
 </div>
 <div class="paragraph">
@@ -756,21 +756,21 @@ credentials and keys.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>how to build and start ConfD and example application</p>
+<p>how to build and start ConfD example application</p>
 </li>
 <li>
-<p>how to build and link NETCONF NED package for NSO</p>
+<p>how to make, build and link NETCONF NED package for NSO</p>
 </li>
 <li>
-<p>how to create and configure ConfD device in NSO</p>
+<p>how to create and configure ConfD (NETCONF) device in NSO</p>
 </li>
 <li>
-<p>how configure the device datamodel (ConfD example) in NSO</p>
+<p>how configure the device data model (ConfD example data model ) in NSO</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>It is recommended to open 4 shells,
+<p>It is recommended to open 4 terminal shells,
 ideally in a tiled mode (e.g. using <a href="https://github.com/tmux/tmux/wiki">tmux</a>).</p>
 </div>
 <div class="ulist">
@@ -779,7 +779,7 @@ ideally in a tiled mode (e.g. using <a href="https://github.com/tmux/tmux/wiki">
 <p><em>shell 1</em> - to build and run ConfD example</p>
 </li>
 <li>
-<p><em>shell 2</em> - to build NSO directory and NED package, to run NSO itself</p>
+<p><em>shell 2</em> - to make NSO directory and NED package, to run NSO itself</p>
 </li>
 <li>
 <p><em>shell 3</em> - to run ConfD CLI</p>
@@ -793,9 +793,8 @@ ideally in a tiled mode (e.g. using <a href="https://github.com/tmux/tmux/wiki">
 <div class="sect2">
 <h3 id="_copypaste_and_output_blocks">Copy/Paste and Output blocks</h3>
 <div class="paragraph">
-<p>In this note you will find script examples, that can be directly pasted into
-shell or CLI terminal. We will use following block style for copy/paste ready
-script text:</p>
+<p>In this note you will find script and code examples, that can be directly pasted into shell or CLI terminal. We will use following block style for copy/paste ready
+text:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -809,14 +808,14 @@ script text:</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-make sure all commands have executed -  confirm last command with <kbd>ENTER</kbd>,
-      if needed
+make sure all commands have executed - confirm last command with <kbd>ENTER</kbd>,
+if needed
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>The output of the shell or CLI commands or file content will be displayed
+<p>The output of the shell CLI commands or file content will be displayed
 with following block style:</p>
 </div>
 <div class="listingblock sidebarblock">
@@ -861,7 +860,7 @@ with read and write access.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<em>version numbers may differ, according to your installation</em>
+version numbers may differ, according to your installation
 </td>
 </tr>
 </table>
@@ -910,7 +909,7 @@ predecessor NCS.
 </div>
 </div>
 <div class="sect1">
-<h2 id="_build_and_start_confd_and_example_application">Build and start ConfD and example application</h2>
+<h2 id="_build_and_start_confd_example_application">Build and start ConfD example application</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The <code>1-2-3-start-query-model</code> example can be found in the ConfD installation directory,
@@ -1056,10 +1055,10 @@ CLI and NETCONF SSH ports (which are the same). Open <code>confd.conf</code> and
 <div class="ulist">
 <ul>
 <li>
-<p>add <code>/confdConfig/cli/ssh/port</code> -&#8594; <code>13022</code> (original <code>2024</code>)</p>
+<p>add <code>/confdConfig/cli/ssh/port</code> &#8594; <code>13022</code> (original <code>2024</code>)</p>
 </li>
 <li>
-<p>modify <code>/confdConfig/netconf/transport/ssh/port</code> -&#8594; <code>14022</code> (original <code>2022</code>)</p>
+<p>modify <code>/confdConfig/netconf/transport/ssh/port</code> &#8594; <code>14022</code> (original <code>2022</code>)</p>
 </li>
 </ul>
 </div>
@@ -1118,7 +1117,7 @@ xmlstarlet ed -L -O -N conf="http://tail-f.com/ns/confd_cfg/1.0" -u "/conf:confd
 </table>
 </div>
 <div class="paragraph">
-<p>To test the modification works, start the example (in the <em>shell 1</em>) with <code>make clean all start</code> and
+<p>To test the port modification works, start the example (in the <em>shell 1</em>) with <code>make clean all start</code> and
 test NETCONF access. Run in the <em>shell 3</em>:</p>
 </div>
 <div class="listingblock">
@@ -1266,7 +1265,7 @@ commit</code></pre>
 </div>
 <div class="paragraph">
 <p>Once device is configured, we can try to synchronize it, so we know connection to
-the ConfD NETCONF device is correctly established.  Type in the <em>shell 3</em>:</p>
+the ConfD NETCONF device is correctly established. Type in the <em>shell 3</em>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1342,15 +1341,14 @@ run following command to enter CLI:</p>
 <pre class="highlight"><code class="language-shell" data-lang="shell">make cli-c</code></pre>
 </div>
 </div>
-<div class="listingblock">
-<div class="title">ConfD CLI is entered</div>
+<div class="listingblock sidebarblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell">admin connected from 127.0.0.1 using console on pc-test
-pc-test#</code></pre>
+<pre>admin connected from 127.0.0.1 using console on pc-test
+pc-test#</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>once in the ConfD example CLI, type (in <em>shell 4</em>):</p>
+<p>once in the ConfD example CLI, type (in the <em>shell 4</em>):</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1368,7 +1366,7 @@ dhcp default-lease-time 700s</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>In the similar way we can display the same data in the NSO CLI. Type in the <em>shell 3</em>:</p>
+<p>In a similar way we can display the same data in the NSO CLI. Type in the <em>shell 3</em>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1417,16 +1415,16 @@ the example directory (<code>/tmp/1-2-3-start-query-model</code>):</p>
 <h2 id="_conclusion">Conclusion</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this note we have learnt how to connect and configure NETCONF device.
-To connect NETCONF device, we have to configure it in NSO device data model.
+<p>In this note we have learnt how to connect and configure NETCONF device in NSO.
+To connect NETCONF device, we have to configure it in the NSO <code>device</code> data model.
 No adaptation, filtering or bridging application is needed.
 This is advantage of NETCONF standard.</p>
 </div>
 <div class="paragraph">
 <p>We have used ConfD and ConfD example application (<code>intro/1-2-3-start-query-model</code>)
-as NETCONF device.
+as a NETCONF device.
 ConfD is NETCONF compliant and NSO is tested with ConfD. The steps described
-in this note can be used for with device, which is NETCONF compliant.</p>
+in this note can be used with any device, which is NETCONF compliant.</p>
 </div>
 <div class="admonitionblock note">
 <table>
