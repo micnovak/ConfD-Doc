@@ -12,7 +12,7 @@ Version:  Date:         Description:                        Author:
 0.1.0     2021-01-04    Version for GitHub Pages            Michal Novák           
                                                             micnovak@cisco.com
 
-0.2.0     2021-01-05    Updated document text               Michal Novák        
+0.2.0     2021-01-06    Updated document text               Michal Novák        
                                                             micnovak@cisco.com               
 --------------------------------------------------------------------------------
 ```
@@ -24,7 +24,7 @@ We will use ConfD example application `intro/1-2-3-start-query-model` as the dev
 
 ConfD fully supports NETCONF and we can take advantage of NSO's NETCONF NED (NETCONF Element Driver).
 This means out of the box interoperability between ConfD and NSO. We only need to configure
-the device (inside NSO's device data model) and provide connection information like ports,
+the device (inside NSO's `device` data model) and provide connection information like ports,
 credentials and keys.
 
 The steps can be used with ConfD Premium or with ConfD Basic.
@@ -36,23 +36,23 @@ https://www.tail-f.com/confd-basic - [download link](https://developer.cisco.com
 
 ### What you will learn
 
-* how to build and start ConfD and example application
-* how to build and link NETCONF NED package for NSO
-* how to create and configure ConfD device in NSO
-* how configure the device datamodel (ConfD example) in NSO
+* how to build and start ConfD example application
+* how to make, build and link NETCONF NED package for NSO
+* how to create and configure ConfD (NETCONF) device in NSO
+* how configure the device data model (ConfD example data model ) in NSO
 
-It is recommended to open 4 shells, ideally in a tiled mode (e.g. using [tmux](https://github.com/tmux/tmux/wiki)).
+It is recommended to open 4 terminal shells,
+ideally in a tiled mode (e.g. using [tmux](https://github.com/tmux/tmux/wiki)).
 
 * _shell 1_ - to build and run ConfD example
-* _shell 2_ - to build NSO directory and NED package, to run NSO itself
+* _shell 2_ - to make NSO directory and NED package, to run NSO itself
 * _shell 3_ - to run ConfD CLI
 * _shell 4_ - to run NSO CLI
 
 ### Copy/Paste and Output blocks
 
-In this note you will find script examples, that can be directly pasted into
-shell or CLI terminal. We will use following block style for copy/paste ready
-script text:
+In this note you will find script and code examples, that can be directly pasted into shell or CLI terminal. We will use following block style for copy/paste ready
+text:
 
 ```shell
 confd --version
@@ -63,8 +63,8 @@ confd --version
 NOTE: make sure all commands have executed -  confirm last command with _[ENTER]_,
 if needed
 
-The output of the shell or CLI commands or file content will be displayed
-with in similar block with caption description:
+The output of the shell CLI commands or file content will be displayed
+with following block style:
 
 _output_
 ```
@@ -84,7 +84,7 @@ with read and write access.
 
 To check ConfD and NSO installation, run following commands and check the output.
 
-NOTE: _version numbers may differ, according to your installation_
+NOTE: version numbers may differ, according to your installation
 
 run in the _shell 1_:
 
@@ -211,8 +211,8 @@ Before we start the ConfD example, we need to modify its `confd.conf`
 to use different CLI and NETCONF SSH ports, so they do not conflict with NSO
 CLI and NETCONF SSH ports (which are the same). Open `confd.conf` and:
 
-* add `/confdConfig/cli/ssh/port` --> `13022` (original `2024`)
-* modify `/confdConfig/netconf/transport/ssh/port` --> `14022` (original `2022`)
+* add `/confdConfig/cli/ssh/port` -> `13022` (original `2024`)
+* modify `/confdConfig/netconf/transport/ssh/port` -> `14022` (original `2022`)
 
 Corresponding `CLI` and NETCONF sections should look like:
 
@@ -252,7 +252,7 @@ xmlstarlet ed -L -O -N conf="http://tail-f.com/ns/confd_cfg/1.0" -u "/conf:confd
 
 <1> set `EXAMPLE_DIR` as needed
 
-To test the modification works, start the example (in the _shell 1_) with `make clean all start` and
+To test the port modification works, start the example (in the _shell 1_) with `make clean all start` and
 test NETCONF access. Run in the _shell 3_:
 
 ```shell
@@ -291,8 +291,6 @@ next, we can enter NSO CLI and configure the device. In the _shell 3_ run:
 ```shell
 ncs_cli -u admin -C
 ```
-
-we should see NSO CLI prompt like:
 
 _output_
 ```
@@ -490,15 +488,15 @@ If needed, you can delete the example directory (`rm /tmp/1-2-3-start-query-mode
 
 ## Conclusion
 
-In this note we have learnt how to connect and configure NETCONF device.
-To connect NETCONF device, we have to configure it in NSO device data model.
+In this note we have learnt how to connect and configure NETCONF device in NSO.
+To connect NETCONF device, we have to configure it in the NSO `device` data model.
 No adaptation, filtering or bridging application is needed.
 This is advantage of NETCONF standard.
 
 We have used ConfD and ConfD example application (`intro/1-2-3-start-query-model`)
-as NETCONF device.
+as a NETCONF device.
 ConfD is NETCONF compliant and NSO is tested with ConfD. The steps described
-in this note can be used for with device, which is NETCONF compliant.
+in this note can be used with any device, which is NETCONF compliant.
 
 NOTE: We have shown how to make NETCONF NED with commandline command `ncs-make-package`.
 There are also tools that can be used for this, like [Pioneer](https://github.com/NSO-developer/pioneer) and
