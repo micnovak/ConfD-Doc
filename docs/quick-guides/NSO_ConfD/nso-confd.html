@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.12">
+<meta name="generator" content="Asciidoctor 2.0.10">
 <title>NSO and ConfD interaction</title>
 <style>
 @import url(//cdnjs.cloudflare.com/ajax/libs/font-awesome/3.2.0/css/font-awesome.css);
@@ -377,7 +377,7 @@ table.tableblock #preamble > .sectionbody > .paragraph:first-of-type p { font-si
 
 .exampleblock.result > .content { -webkit-box-shadow: 0 1px 8px #eaeaea; box-shadow: 0 1px 8px #eaeaea; }
 
-.sidebarblock { border-style: solid; border-width: 1px; border-color: #e6e6e6; margin-bottom: 1.33333em; padding: 1.33333em; background: #F9F9F9; -webkit-border-radius: 3px; border-radius: 3px; }
+.sidebarblock { border-style: solid; border-width: 1px; border-color: #e6e6e6; margin-bottom: 1.33333em; padding: 1.33333em; background: white; -webkit-border-radius: 3px; border-radius: 3px; }
 .sidebarblock > :first-child { margin-top: 0; }
 .sidebarblock > :last-child { margin-bottom: 0; }
 .sidebarblock h1, .sidebarblock h2, .sidebarblock h3, .sidebarblock #toctitle, .sidebarblock > .content > .title, .sidebarblock h4, .sidebarblock h5, .sidebarblock h6, .sidebarblock p { color: #333333; }
@@ -398,6 +398,11 @@ table.tableblock #preamble > .sectionbody > .paragraph:first-of-type p { font-si
 
 .listingblock:hover code[class*=" language-"]:before { text-transform: uppercase; font-size: 0.9em; color: #999; position: absolute; top: 0.4em; right: 0.4em; }
 
+.listingblock code[data-lang]:before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:#999}
+.listingblock:hover code[data-lang]:before{display:block}
+/*.listingblock code[data-lang]:before{display:block}*/
+
+/*
 .listingblock:hover code.asciidoc:before { content: "asciidoc"; }
 .listingblock:hover code.clojure:before { content: "clojure"; }
 .listingblock:hover code.css:before { content: "css"; }
@@ -410,6 +415,7 @@ table.tableblock #preamble > .sectionbody > .paragraph:first-of-type p { font-si
 .listingblock:hover code.scss:before { content: "scss"; }
 .listingblock:hover code.xml:before { content: "xml"; }
 .listingblock:hover code.yaml:before { content: "yaml"; }
+ */
 
 .listingblock.terminal pre .command:before { content: attr(data-prompt); padding-right: 0.5em; color: #999; }
 
@@ -808,8 +814,9 @@ text:</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-make sure all commands have executed - confirm last command with <kbd>ENTER</kbd>,
-if needed
+make sure all commands have executed - confirm last command with <kbd>ENTER</kbd>, if needed.
+If viewed on <a href="https://github.com">GitHub</a>, you may find following
+browser <a href="https://github.com/zenorocha/codecopy">extension</a> useful, to get out of the box copy to clipboard button.
 </td>
 </tr>
 </table>
@@ -818,7 +825,8 @@ if needed
 <p>The output of the shell CLI commands or file content will be displayed
 with following block style:</p>
 </div>
-<div class="listingblock sidebarblock">
+<div class="listingblock">
+<div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>$ confd --version
 7.4</pre>
@@ -873,7 +881,8 @@ version numbers may differ, according to your installation
 <pre class="highlight"><code class="language-shell" data-lang="shell">confd --version</code></pre>
 </div>
 </div>
-<div class="listingblock sidebarblock">
+<div class="listingblock">
+<div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>$ confd --version
 7.4</pre>
@@ -887,7 +896,8 @@ version numbers may differ, according to your installation
 <pre class="highlight"><code class="language-shell" data-lang="shell">ncs --version</code></pre>
 </div>
 </div>
-<div class="listingblock sidebarblock">
+<div class="listingblock">
+<div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>$ ncs --version
 5.5</pre>
@@ -937,7 +947,8 @@ in the <em>shell 1</em>:</p>
 <pre class="highlight"><code class="language-shell" data-lang="shell">make clean all</code></pre>
 </div>
 </div>
-<div class="listingblock sidebarblock">
+<div class="listingblock">
+<div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>$ make clean all
 rm -rf \
@@ -1040,7 +1051,8 @@ the package yourself with <code>make -C dhcpned/src all</code></td>
 <pre class="highlight"><code class="language-shell" data-lang="shell">ls packages</code></pre>
 </div>
 </div>
-<div class="listingblock sidebarblock">
+<div class="listingblock">
+<div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>dhcpned</pre>
 </div>
@@ -1065,7 +1077,7 @@ CLI and NETCONF SSH ports (which are the same). Open <code>confd.conf</code> and
 <div class="paragraph">
 <p>Corresponding <code>CLI</code> and NETCONF sections should look like:</p>
 </div>
-<div class="listingblock sidebarblock">
+<div class="listingblock">
 <div class="title">confd.conf</div>
 <div class="content">
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;cli&gt;
@@ -1176,7 +1188,8 @@ Use <code>exit</code> command to exit the CLI.</p>
 <div class="paragraph">
 <p>we should see NSO CLI prompt like:</p>
 </div>
-<div class="listingblock sidebarblock">
+<div class="listingblock">
+<div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>admin connected from 127.0.0.1 using console on pc-test
 admin@ncs#</pre>
@@ -1190,7 +1203,8 @@ admin@ncs#</pre>
 <pre class="highlight"><code class="language-shell" data-lang="shell">show packages</code></pre>
 </div>
 </div>
-<div class="listingblock sidebarblock">
+<div class="listingblock">
+<div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>admin@ncs# show packages
 packages package dhcpned-nc-1.0
@@ -1236,7 +1250,8 @@ top</code></pre>
 <pre class="highlight"><code class="language-shell" data-lang="shell">do show running-config devices authgroups group devnetconf</code></pre>
 </div>
 </div>
-<div class="listingblock sidebarblock">
+<div class="listingblock">
+<div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>admin@ncs(config)# do show running-config devices authgroups group devnetconf
 devices authgroups group devnetconf
@@ -1273,7 +1288,8 @@ the ConfD NETCONF device is correctly established. Type in the <em>shell 3</em>:
 sync-from</code></pre>
 </div>
 </div>
-<div class="listingblock sidebarblock">
+<div class="listingblock">
+<div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>admin@ncs(config-device-EX_NETCONF)# ssh fetch-host-keys
 result updated
@@ -1294,7 +1310,8 @@ result true</pre>
 do show running-config devices device EX_NETCONF</code></pre>
 </div>
 </div>
-<div class="listingblock sidebarblock">
+<div class="listingblock">
+<div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>admin@ncs(config)# do show running-config devices device EX_NETCONF
 devices device EX_NETCONF
@@ -1341,7 +1358,8 @@ run following command to enter CLI:</p>
 <pre class="highlight"><code class="language-shell" data-lang="shell">make cli-c</code></pre>
 </div>
 </div>
-<div class="listingblock sidebarblock">
+<div class="listingblock">
+<div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>admin connected from 127.0.0.1 using console on pc-test
 pc-test#</pre>
@@ -1359,7 +1377,8 @@ pc-test#</pre>
 <p>we can see the <code>default-lease-time</code> value configured in the NSO CLI is
 applied and visible in the running configuration of the ConfD example device:</p>
 </div>
-<div class="listingblock sidebarblock">
+<div class="listingblock">
+<div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>pc-test# show running-config  dhcp
 dhcp default-lease-time 700s</pre>
@@ -1374,7 +1393,8 @@ dhcp default-lease-time 700s</pre>
 show full-configuration devices device EX_NETCONF config</code></pre>
 </div>
 </div>
-<div class="listingblock sidebarblock">
+<div class="listingblock">
+<div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>admin@ncs(config)# show full-configuration devices device EX_NETCONF config
 devices device EX_NETCONF
