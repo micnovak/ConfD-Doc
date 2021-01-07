@@ -58,10 +58,9 @@ text:
 confd --version
 ```
 
-
-
-NOTE: make sure all commands have executed -  confirm last command with _[ENTER]_,
-if needed
+NOTE: make sure all commands have executed - confirm last command with _[ENTER]_,
+if needed. If viewed on [GitHub](https://github.com), you may find following 
+browser [extension](https://github.com/zenorocha/codecopy) useful, to get out of the box copy to clipboard button.
 
 The output of the shell CLI commands or file content will be displayed
 with following block style:

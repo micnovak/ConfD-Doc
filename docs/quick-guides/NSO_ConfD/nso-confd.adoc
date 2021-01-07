@@ -77,13 +77,14 @@ text:
 confd --version
 ----
 
-NOTE: make sure all commands have executed - confirm last command with kbd:[ENTER],
-if needed
+NOTE: make sure all commands have executed - confirm last command with kbd:[ENTER], if needed.
+If viewed on https://github.com[GitHub], you may find following
+browser https://github.com/zenorocha/codecopy[extension] useful, to get out of the box copy to clipboard button.
 
 The output of the shell CLI commands or file content will be displayed
 with following block style:
 
-[.sidebarblock]
+.[.small]_output_
 ----
 $ confd --version
 7.4
@@ -110,7 +111,7 @@ run in the _shell 1_:
 confd --version
 ----
 
-[.sidebarblock]
+.[.small]_output_
 ----
 $ confd --version
 7.4
@@ -123,7 +124,7 @@ run in the _shell 2_:
 ncs --version
 ----
 
-[.sidebarblock]
+.[.small]_output_
 ----
 $ ncs --version
 5.5
@@ -156,7 +157,7 @@ in the _shell 1_:
 make clean all
 ----
 
-[.sidebarblock]
+.[.small]_output_
 ----
 $ make clean all
 rm -rf \
@@ -224,7 +225,7 @@ To check the package is linked, run in the _shell 2_:
 ls packages
 ----
 
-[.sidebarblock]
+.[.small]_output_
 ----
 dhcpned
 ----
@@ -240,7 +241,7 @@ CLI and NETCONF SSH ports (which are the same). Open `confd.conf` and:
 
 Corresponding `CLI` and NETCONF sections should look like:
 
-[.sidebarblock]
+.[.small]_output_
 .confd.conf
 [source,xml]
 ----
@@ -326,7 +327,7 @@ ncs_cli -u admin -C
 
 we should see NSO CLI prompt like:
 
-[.sidebarblock]
+.[.small]_output_
 ----
 admin connected from 127.0.0.1 using console on pc-test
 admin@ncs#
@@ -339,7 +340,7 @@ we can check our package (`dhcpned`) is correctly loaded, type in the _shell 3_:
 show packages
 ----
 
-[.sidebarblock]
+.[.small]_output_
 ----
 admin@ncs# show packages
 packages package dhcpned-nc-1.0
@@ -382,7 +383,7 @@ you can verify `authgroup` configuration with command
 do show running-config devices authgroups group devnetconf
 ----
 
-[.sidebarblock]
+.[.small]_output_
 ----
 admin@ncs(config)# do show running-config devices authgroups group devnetconf
 devices authgroups group devnetconf
@@ -416,7 +417,7 @@ ssh fetch-host-keys
 sync-from
 ----
 
-[.sidebarblock]
+.[.small]_output_
 ----
 admin@ncs(config-device-EX_NETCONF)# ssh fetch-host-keys
 result updated
@@ -436,7 +437,7 @@ top
 do show running-config devices device EX_NETCONF
 ----
 
-[.sidebarblock]
+.[.small]_output_
 ----
 admin@ncs(config)# do show running-config devices device EX_NETCONF
 devices device EX_NETCONF
@@ -476,7 +477,7 @@ run following command to enter CLI:
 make cli-c
 ----
 
-[.sidebarblock]
+.[.small]_output_
 ----
 admin connected from 127.0.0.1 using console on pc-test
 pc-test#
@@ -492,7 +493,7 @@ show running-config dhcp
 we can see the `default-lease-time` value configured in the NSO CLI is
 applied and visible in the running configuration of the ConfD example device:
 
-[.sidebarblock]
+.[.small]_output_
 ----
 pc-test# show running-config  dhcp
 dhcp default-lease-time 700s
@@ -506,7 +507,7 @@ top
 show full-configuration devices device EX_NETCONF config
 ----
 
-[.sidebarblock]
+.[.small]_output_
 ----
 admin@ncs(config)# show full-configuration devices device EX_NETCONF config
 devices device EX_NETCONF
