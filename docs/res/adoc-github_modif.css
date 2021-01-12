@@ -389,7 +389,7 @@ table.tableblock #preamble > .sectionbody > .paragraph:first-of-type p { font-si
 
 .listingblock:hover code[class*=" language-"]:before { text-transform: uppercase; font-size: 0.9em; color: #999; position: absolute; top: 0.4em; right: 0.4em; }
 
-.listingblock code[data-lang]:before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:#999}
+.listingblock code[data-lang]:before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:1.5rem;line-height:1;text-transform:uppercase;color:#999}
 .listingblock:hover code[data-lang]:before{display:block}
 /*.listingblock code[data-lang]:before{display:block}*/
 

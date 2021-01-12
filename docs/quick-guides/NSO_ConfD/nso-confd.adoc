@@ -72,7 +72,7 @@ ideally in a tiled mode (e.g. using https://github.com/tmux/tmux/wiki[tmux]).
 In this note you will find script and code examples, that can be directly pasted into shell or CLI terminal. We will use following block style for copy/paste ready
 text:
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 confd --version
 ----
@@ -107,7 +107,7 @@ NOTE: version numbers may differ, according to your installation
 
 run in the _shell 1_:
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 confd --version
 ----
@@ -121,7 +121,7 @@ $ confd --version
 
 run in the _shell 2_:
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 ncs --version
 ----
@@ -146,7 +146,7 @@ to some other directory. The latter is better idea, since we will modify the `co
 
 E.g.
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 cp -r $CONFD_DIR/examples.confd/intro/1-2-3-start-query-model /tmp
 cd /tmp/1-2-3-start-query-model
@@ -155,7 +155,7 @@ cd /tmp/1-2-3-start-query-model
 First, we will build the example. Go to the example directory and run
 in the _shell 1_:
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 make clean all
 ----
@@ -196,7 +196,7 @@ NOTE: You can start and investigate example with `Makefile` target commands `mak
 First, we need to set-up NSO directory and enter it. Go to the directory for
 NSO project (e.g. `cd /tmp`) and run in the _shell 2_:
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 ncs-project create nsotest
 cd nsotest
@@ -207,7 +207,7 @@ NOTE: the older way was to use `ncs-setup --dest nsotest`
 Next, we make and build NETCONF NED from the example's YANG file(s) and link it to
 the NSO packages. Run in the _shell 2_:
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 ncs-make-package \
         --no-java \
@@ -224,7 +224,7 @@ the package yourself with `make -C dhcpned/src all`
 
 To check the package is linked, run in the _shell 2_:
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 ls packages
 ----
@@ -274,7 +274,7 @@ Corresponding `CLI` and NETCONF sections should look like:
 You can use following `xmlstarlet` commands, to modify `confd.conf` automatically.
 Run in the _shell 1_ following commands:
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 export EXAMPLE_DIR=/tmp/1-2-3-start-query-model  #<1>
 xmlstarlet ed -L -O -N conf="http://tail-f.com/ns/confd_cfg/1.0" -s /conf:confdConfig -t elem -n cli ${EXAMPLE_DIR}//confd.conf
@@ -289,7 +289,7 @@ xmlstarlet ed -L -O -N conf="http://tail-f.com/ns/confd_cfg/1.0" -u "/conf:confd
 To test the port modification works, start the example (in the _shell 1_) with `make clean all start` and
 test NETCONF access. Run in the _shell 3_:
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 netconf-console --port 14022 --hello
 ----
@@ -298,7 +298,7 @@ NETCONF hello message should be returned.
 
 To test SSH CLI access, run in the _shell 3_:
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 ssh admin@127.0.0.1 -p 13022
 ----
@@ -312,21 +312,21 @@ Once we have everything set-up, we can start configuring the ConfD example as NS
 
 If you do not have ConfD example running from previous steps, start it in the _shell 1_:
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 make clean all start
 ----
 
 after that, start NSO in the _shell 2_:
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 ncs --with-package-reload
 ----
 
 next, we can enter NSO CLI and configure the device. In the _shell 3_ run:
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 ncs_cli -u admin -C
 ----
@@ -342,7 +342,7 @@ admin@ncs#
 
 we can check our package (`dhcpned`) is correctly loaded, type in the _shell 3_:
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 show packages
 ----
@@ -364,7 +364,7 @@ packages package dhcpned-nc-1.0
 
 finally, we enter config mode with command (in the _shell 3_):
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 config
 ----
@@ -375,7 +375,7 @@ In order the NSO device can connect to the real NETCONF device, we need to
 provide authorization details. This is done by linking NSO device with `authgroup`.
 We configure `authgroup` in the config mode of NSO CLI. Type in (or paste into) the _shell 3_:
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 devices authgroups group devnetconf
 default-map remote-name admin
@@ -386,7 +386,7 @@ top
 
 you can verify `authgroup` configuration with command
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 do show running-config devices authgroups group devnetconf
 ----
@@ -406,7 +406,7 @@ devices authgroups group devnetconf
 We have everything ready to configure NSO device and connect to ConfD (NETCONF) running
 the example. Type in (paste into) the _shell 3_:
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 devices device EX_NETCONF
 address 127.0.0.1
@@ -420,7 +420,7 @@ commit
 Once device is configured, we can try to synchronize it, so we know connection to
 the ConfD NETCONF device is correctly established. Type in the _shell 3_:
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 ssh fetch-host-keys
 sync-from
@@ -441,7 +441,7 @@ result true
 
 to see how NSO device is configured, type in the _shell 3_:
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 top
 do show running-config devices device EX_NETCONF
@@ -469,7 +469,7 @@ We have ConfD example attached to the NSO as device (name `EX_NETCONF`).
 Now, we can configure example data model (directly in the NSO).
 In the _shell 3_ type (make sure you are still in config mode):
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 top
 devices device EX_NETCONF
@@ -483,7 +483,7 @@ To verify the configuration was performed on the ConfD, open example CLI and che
 In the _shell 4_ go to the example directory (e.g. `cd /tmp/1-2-3-start-query-model`) and
 run following command to enter CLI:
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 make cli-c
 ----
@@ -497,7 +497,7 @@ pc-test#
 
 once in the ConfD example CLI, type (in the _shell 4_):
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 show running-config dhcp
 ----
@@ -514,7 +514,7 @@ dhcp default-lease-time 700s
 
 In a similar way we can display the same data in the NSO CLI. Type in the _shell 3_:
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 top
 show full-configuration devices device EX_NETCONF config
@@ -535,7 +535,7 @@ devices device EX_NETCONF
 
 To stop NSO, type in the _shell 2_:
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 ncs --stop
 ----
@@ -543,7 +543,7 @@ ncs --stop
 To stop ConfD example application, press in the _shell 1_ kbd:[CTRL-C] or type in
 the example directory (`/tmp/1-2-3-start-query-model`):
 
-[source,shell]
+[source,shell,role="acopy"]
 ----
 make stop
 ----
