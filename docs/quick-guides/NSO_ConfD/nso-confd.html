@@ -398,7 +398,7 @@ table.tableblock #preamble > .sectionbody > .paragraph:first-of-type p { font-si
 
 .listingblock:hover code[class*=" language-"]:before { text-transform: uppercase; font-size: 0.9em; color: #999; position: absolute; top: 0.4em; right: 0.4em; }
 
-.listingblock code[data-lang]:before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:#999}
+.listingblock code[data-lang]:before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:1.5rem;line-height:1;text-transform:uppercase;color:#999}
 .listingblock:hover code[data-lang]:before{display:block}
 /*.listingblock code[data-lang]:before{display:block}*/
 
@@ -656,9 +656,20 @@ h2 { color: #325D72; border-bottom: 1px solid #dddddd; }
 
 .sidebarblock > .content > .title { margin-top: -20px; margin-right: -20px; margin-left: -20px; margin-bottom: 20px; padding: 1em; font-size: 0.8em; background: #eaeaea; }
 
+.output  { border-style: solid;  border-width: 1px; border-radius: 5px;  border-color: #C0C0C0; /* padding: .0em;*/}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-</head>
+<style>.adocclip {
+    background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABVUlEQVQ4T+2TO0gDQRBAZ+YuwRTa+OkEwUrE0pyVriBYxCgKQexFLSJYm8rOTitjob1wiHAxFopkUwgeaay0sLMQtVQkQnI7sgcLcQuj2DrV/PbtzM4sgiW5XM55eKmfA+K9HWOA4UQCF68ugkcTQztJCOHWoWs3lEHejnli1kdkdlzcMJAYkJ7MTCPTkNYRmRTjPAIca1tBdFSTZ09a90R2nx23QKpZNJAY4E3MHEbIO/aNDtOWYmCgKK8hnsieAMAzMnQy4XtYCVZiwJjIHFzL8rIN0H5KJjcbH809AzE5uppQltbaAhQ4N4iqDxQvhNXyCACwaactYHR8rh+o0a0PELiFFLwuSSmbPwa0tqRLTsFb/h/wxzdg5KJijuKNZVqvVUur3+6BPQVEvlVMSvsZ1V2tcnr5K0DrGL/8xrTIbhOoHnuVW+0IaHCgt2PK9/24BSOfXnvqEcWHX5oAAAAASUVORK5CYII=) no-repeat top left;
+    border: none;
+    position: absolute;
+    right: 0.1em;
+    top: 0.5em;
+    color: grey;
+ }
+.adocclip:focus {outline:0;}
+
+</style></head>
 <body class="article toc2 toc-left">
 <div id="header">
 <h1>NSO and ConfD interaction</h1>
@@ -802,7 +813,7 @@ ideally in a tiled mode (e.g. using <a href="https://github.com/tmux/tmux/wiki">
 <p>In this note you will find script and code examples, that can be directly pasted into shell or CLI terminal. We will use following block style for copy/paste ready
 text:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">confd --version</code></pre>
 </div>
@@ -825,7 +836,7 @@ browser <a href="https://github.com/zenorocha/codecopy">extension</a> useful, to
 <p>The output of the shell CLI commands or file content will be displayed
 with following block style:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock output">
 <div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>$ confd --version
@@ -876,12 +887,12 @@ version numbers may differ, according to your installation
 <div class="paragraph">
 <p>run in the <em>shell 1</em>:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">confd --version</code></pre>
 </div>
 </div>
-<div class="listingblock">
+<div class="listingblock output">
 <div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>$ confd --version
@@ -891,12 +902,12 @@ version numbers may differ, according to your installation
 <div class="paragraph">
 <p>run in the <em>shell 2</em>:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">ncs --version</code></pre>
 </div>
 </div>
-<div class="listingblock">
+<div class="listingblock output">
 <div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>$ ncs --version
@@ -932,7 +943,7 @@ to some other directory. The latter is better idea, since we will modify the <co
 <div class="paragraph">
 <p>E.g.</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">cp -r $CONFD_DIR/examples.confd/intro/1-2-3-start-query-model /tmp
 cd /tmp/1-2-3-start-query-model</code></pre>
@@ -942,12 +953,12 @@ cd /tmp/1-2-3-start-query-model</code></pre>
 <p>First, we will build the example. Go to the example directory and run
 in the <em>shell 1</em>:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">make clean all</code></pre>
 </div>
 </div>
-<div class="listingblock">
+<div class="listingblock output">
 <div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>$ make clean all
@@ -997,7 +1008,7 @@ You can start and investigate example with <code>Makefile</code> target commands
 <p>First, we need to set-up NSO directory and enter it. Go to the directory for
 NSO project (e.g. <code>cd /tmp</code>) and run in the <em>shell 2</em>:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">ncs-project create nsotest
 cd nsotest</code></pre>
@@ -1019,7 +1030,7 @@ the older way was to use <code>ncs-setup --dest nsotest</code>
 <p>Next, we make and build NETCONF NED from the example&#8217;s YANG file(s) and link it to
 the NSO packages. Run in the <em>shell 2</em>:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">ncs-make-package \
         --no-java \
@@ -1046,12 +1057,12 @@ the package yourself with <code>make -C dhcpned/src all</code></td>
 <div class="paragraph">
 <p>To check the package is linked, run in the <em>shell 2</em>:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">ls packages</code></pre>
 </div>
 </div>
-<div class="listingblock">
+<div class="listingblock output">
 <div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>dhcpned</pre>
@@ -1077,10 +1088,10 @@ CLI and NETCONF SSH ports (which are the same). Open <code>confd.conf</code> and
 <div class="paragraph">
 <p>Corresponding <code>CLI</code> and NETCONF sections should look like:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="title">confd.conf</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;cli&gt;
+<pre class="highlight"><code>&lt;cli&gt;
   &lt;ssh&gt;
     &lt;port&gt;13022&lt;/port&gt;
   &lt;/ssh&gt;
@@ -1110,7 +1121,7 @@ CLI and NETCONF SSH ports (which are the same). Open <code>confd.conf</code> and
 <p>You can use following <code>xmlstarlet</code> commands, to modify <code>confd.conf</code> automatically.
 Run in the <em>shell 1</em> following commands:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">export EXAMPLE_DIR=/tmp/1-2-3-start-query-model  <i class="conum" data-value="1"></i><b>(1)</b>
 xmlstarlet ed -L -O -N conf="http://tail-f.com/ns/confd_cfg/1.0" -s /conf:confdConfig -t elem -n cli ${EXAMPLE_DIR}//confd.conf
@@ -1132,7 +1143,7 @@ xmlstarlet ed -L -O -N conf="http://tail-f.com/ns/confd_cfg/1.0" -u "/conf:confd
 <p>To test the port modification works, start the example (in the <em>shell 1</em>) with <code>make clean all start</code> and
 test NETCONF access. Run in the <em>shell 3</em>:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">netconf-console --port 14022 --hello</code></pre>
 </div>
@@ -1143,7 +1154,7 @@ test NETCONF access. Run in the <em>shell 3</em>:</p>
 <div class="paragraph">
 <p>To test SSH CLI access, run in the <em>shell 3</em>:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">ssh admin@127.0.0.1 -p 13022</code></pre>
 </div>
@@ -1164,7 +1175,7 @@ Use <code>exit</code> command to exit the CLI.</p>
 <div class="paragraph">
 <p>If you do not have ConfD example running from previous steps, start it in the <em>shell 1</em>:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">make clean all start</code></pre>
 </div>
@@ -1172,7 +1183,7 @@ Use <code>exit</code> command to exit the CLI.</p>
 <div class="paragraph">
 <p>after that, start NSO in the <em>shell 2</em>:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">ncs --with-package-reload</code></pre>
 </div>
@@ -1180,7 +1191,7 @@ Use <code>exit</code> command to exit the CLI.</p>
 <div class="paragraph">
 <p>next, we can enter NSO CLI and configure the device. In the <em>shell 3</em> run:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">ncs_cli -u admin -C</code></pre>
 </div>
@@ -1188,7 +1199,7 @@ Use <code>exit</code> command to exit the CLI.</p>
 <div class="paragraph">
 <p>we should see NSO CLI prompt like:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock output">
 <div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>admin connected from 127.0.0.1 using console on pc-test
@@ -1198,12 +1209,12 @@ admin@ncs#</pre>
 <div class="paragraph">
 <p>we can check our package (<code>dhcpned</code>) is correctly loaded, type in the <em>shell 3</em>:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">show packages</code></pre>
 </div>
 </div>
-<div class="listingblock">
+<div class="listingblock output">
 <div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>admin@ncs# show packages
@@ -1221,7 +1232,7 @@ packages package dhcpned-nc-1.0
 <div class="paragraph">
 <p>finally, we enter config mode with command (in the <em>shell 3</em>):</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">config</code></pre>
 </div>
@@ -1233,7 +1244,7 @@ packages package dhcpned-nc-1.0
 provide authorization details. This is done by linking NSO device with <code>authgroup</code>.
 We configure <code>authgroup</code> in the config mode of NSO CLI. Type in (or paste into) the <em>shell 3</em>:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">devices authgroups group devnetconf
 default-map remote-name admin
@@ -1245,12 +1256,12 @@ top</code></pre>
 <div class="paragraph">
 <p>you can verify <code>authgroup</code> configuration with command</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">do show running-config devices authgroups group devnetconf</code></pre>
 </div>
 </div>
-<div class="listingblock">
+<div class="listingblock output">
 <div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>admin@ncs(config)# do show running-config devices authgroups group devnetconf
@@ -1267,7 +1278,7 @@ devices authgroups group devnetconf
 <p>We have everything ready to configure NSO device and connect to ConfD (NETCONF) running
 the example. Type in (paste into) the <em>shell 3</em>:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">devices device EX_NETCONF
 address 127.0.0.1
@@ -1282,13 +1293,13 @@ commit</code></pre>
 <p>Once device is configured, we can try to synchronize it, so we know connection to
 the ConfD NETCONF device is correctly established. Type in the <em>shell 3</em>:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">ssh fetch-host-keys
 sync-from</code></pre>
 </div>
 </div>
-<div class="listingblock">
+<div class="listingblock output">
 <div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>admin@ncs(config-device-EX_NETCONF)# ssh fetch-host-keys
@@ -1304,13 +1315,13 @@ result true</pre>
 <div class="paragraph">
 <p>to see how NSO device is configured, type in the <em>shell 3</em>:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">top
 do show running-config devices device EX_NETCONF</code></pre>
 </div>
 </div>
-<div class="listingblock">
+<div class="listingblock output">
 <div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>admin@ncs(config)# do show running-config devices device EX_NETCONF
@@ -1337,7 +1348,7 @@ devices device EX_NETCONF
 Now, we can configure example data model (directly in the NSO).
 In the <em>shell 3</em> type (make sure you are still in config mode):</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">top
 devices device EX_NETCONF
@@ -1353,12 +1364,12 @@ commit</code></pre>
 In the <em>shell 4</em> go to the example directory (e.g. <code>cd /tmp/1-2-3-start-query-model</code>) and
 run following command to enter CLI:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">make cli-c</code></pre>
 </div>
 </div>
-<div class="listingblock">
+<div class="listingblock output">
 <div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>admin connected from 127.0.0.1 using console on pc-test
@@ -1368,7 +1379,7 @@ pc-test#</pre>
 <div class="paragraph">
 <p>once in the ConfD example CLI, type (in the <em>shell 4</em>):</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">show running-config dhcp</code></pre>
 </div>
@@ -1377,7 +1388,7 @@ pc-test#</pre>
 <p>we can see the <code>default-lease-time</code> value configured in the NSO CLI is
 applied and visible in the running configuration of the ConfD example device:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock output">
 <div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>pc-test# show running-config  dhcp
@@ -1387,13 +1398,13 @@ dhcp default-lease-time 700s</pre>
 <div class="paragraph">
 <p>In a similar way we can display the same data in the NSO CLI. Type in the <em>shell 3</em>:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">top
 show full-configuration devices device EX_NETCONF config</code></pre>
 </div>
 </div>
-<div class="listingblock">
+<div class="listingblock output">
 <div class="title"><em class="small">output</em></div>
 <div class="content">
 <pre>admin@ncs(config)# show full-configuration devices device EX_NETCONF config
@@ -1412,7 +1423,7 @@ devices device EX_NETCONF
 <div class="paragraph">
 <p>To stop NSO, type in the <em>shell 2</em>:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">ncs --stop</code></pre>
 </div>
@@ -1421,7 +1432,7 @@ devices device EX_NETCONF
 <p>To stop ConfD example application, press in the <em>shell 1</em> <kbd>CTRL-C</kbd> or type in
 the example directory (<code>/tmp/1-2-3-start-query-model</code>):</p>
 </div>
-<div class="listingblock">
+<div class="listingblock acopy">
 <div class="content">
 <pre class="highlight"><code class="language-shell" data-lang="shell">make stop</code></pre>
 </div>
@@ -1467,5 +1478,41 @@ NETCONF NED Builder (successor to Pioneer)
 <div id="footer-text">
 </div>
 </div>
-</body>
-</html>
+</body><script type='text/javascript' src='https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js'></script>
+<script type='text/javascript'> function docReady(fn) {
+     // see if DOM is already available
+     if (document.readyState === "complete" || document.readyState === "interactive") {
+         // call on next available tick
+         setTimeout(fn, 1);
+     } else {
+         document.addEventListener("DOMContentLoaded", fn);
+     }
+ }
+
+ docReady(function() {
+     var elems = document.getElementsByClassName('listingblock acopy');
+     //console.log("****** elems.length " + elems.length)
+     for (var i = 0; i < elems.length; i++) {
+         var pre = elems[i].getElementsByTagName('pre')[0]
+         //console.log("****** pres.length " + pres.length)
+         var b = document.createElement('button');
+         b.className = 'adocclip';
+         b.setAttribute("data-clipboard-target", "#copyadoc"+i)
+         b.innerHTML = '&nbsp;';
+         pre.setAttribute("id", "copyadoc"+i)
+         pre.parentNode.prepend(b);
+     }
+     var clipboard = new ClipboardJS('.adocclip')
+     clipboard.on('success', function(e) {
+        //console.info('Action:', e.action);
+        //console.info('Text:', e.text);
+        //console.info('Trigger:', e.trigger);
+        e.clearSelection();
+        e.trigger.innerHTML = '&nbsp;&nbsp;&#10003;';
+	    setTimeout(function() {
+	         //e.trigger.classList.remove("adocclippress");
+	         e.trigger.innerHTML = '&nbsp;';
+	    }, 500);
+     });
+ });
+</script></html>
