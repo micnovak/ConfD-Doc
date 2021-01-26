@@ -2,6 +2,7 @@
 :experimental:
 :icons: font
 :toc: left
+:source-highlighter: coderay
 
 ifdef::env-github[]
 :caution-caption: :fire:

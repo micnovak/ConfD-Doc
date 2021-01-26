@@ -22,11 +22,13 @@ dependencies {
 
 asciidoctor {
     configurations 'adoc'
-    sourceDir file('quick-guides')
+    sourceDir file('.')
     sources {
-        include 'NSO_ConfD/nso-confd.adoc'
+        include 'quick-guides/NSO_ConfD/nso-confd.adoc'
     }
-    attributes 'stylesheet': 'res/adoc-github_modif.css'
+    attributes 'stylesheet': "${projectDir}/res/asciidoctor_modif.css"
     outputDir file('build/docs')
+    baseDirFollowsSourceFile()
+    copyNoResources()
 }
 

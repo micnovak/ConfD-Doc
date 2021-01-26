@@ -1,4 +1,4 @@
-@import url(//cdnjs.cloudflare.com/ajax/libs/font-awesome/3.2.0/css/font-awesome.css);
+/*@import url(//cdnjs.cloudflare.com/ajax/libs/font-awesome/3.2.0/css/font-awesome.css);*/
 /* normalize.css v2.1.1 | MIT License | git.io/normalize */
 /* ========================================================================== HTML5 display definitions ========================================================================== */
 /** Correct `block` display not defined in IE 8/9. */
@@ -634,9 +634,9 @@ h2 { color: #325D72; border-bottom: 1px solid #dddddd; }
 
 #content h1 > a.anchor, h2 > a.anchor, h3 > a.anchor, #toctitle > a.anchor, .sidebarblock > .content > .title > a.anchor, h4 > a.anchor, h5 > a.anchor, h6 > a.anchor { color: #333333; }
 
-#header, #content, #footnotes { max-width: 660px; padding-left: 0; padding-right: 0; }
+#header, #content, #footnotes { max-width: 880px; padding-left: 0; padding-right: 0; }
 
-#content ul { list-style-type: none; }
+#content ul { list-style-type: circle; }
 #content ul li { background: url('../images/github/li-chevron.png?1372292342') 0 0.4em no-repeat; padding-left: .7em; }
 
 .olist.procedure > ol { counter-reset: li; list-style: none; position: relative; }
